@@ -42,7 +42,7 @@ AppButton {
             }
             spacing: 6
 
-            WAppIcon {
+            AppIcon {
                 id: iconWidget
                 anchors.verticalCenter: parent.verticalCenter
                 iconName: root.iconName

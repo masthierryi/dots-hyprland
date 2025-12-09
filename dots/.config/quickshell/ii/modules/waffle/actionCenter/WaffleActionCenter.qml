@@ -15,13 +15,12 @@ Scope {
         target: GlobalStates
 
         function onSidebarLeftOpenChanged() {
-            if (GlobalStates.sidebarLeftOpen)
-                panelLoader.active = true;
+            if (GlobalStates.sidebarLeftOpen) barLoader.active = true;
         }
     }
 
     Loader {
-        id: panelLoader
+        id: barLoader
         active: GlobalStates.sidebarLeftOpen
         sourceComponent: PanelWindow {
             id: panelWindow
@@ -43,14 +42,13 @@ Scope {
                 id: focusGrab
                 active: true
                 windows: [panelWindow]
-                onCleared: content.close()
+                onCleared: content.close();
             }
 
             Connections {
                 target: GlobalStates
                 function onSidebarLeftOpenChanged() {
-                    if (!GlobalStates.sidebarLeftOpen)
-                        content.close();
+                    if (!GlobalStates.sidebarLeftOpen) content.close();
                 }
             }
 
@@ -58,9 +56,16 @@ Scope {
                 id: content
                 anchors.fill: parent
 
+                focus: true
+                Keys.onPressed: event => { // Esc to close
+                    if (event.key === Qt.Key_Escape) {
+                        content.close()
+                    }
+                }
+
                 onClosed: {
                     GlobalStates.sidebarLeftOpen = false;
-                    panelLoader.active = false;
+                    barLoader.active = false;
                 }
             }
         }
@@ -82,23 +87,6 @@ Scope {
         name: "sidebarLeftToggle"
         description: "Toggles left sidebar on press"
 
-        onPressed: root.toggleOpen()
-    }
-
-    IpcHandler {
-        target: "mediaControls"
-
-        function toggle(): void {
-            GlobalStates.sidebarLeftOpen = !GlobalStates.sidebarLeftOpen;
-        }
-    }
-
-    GlobalShortcut {
-        name: "mediaControlsToggle"
-        description: "Toggles media controls on press"
-
-        onPressed: {
-            GlobalStates.sidebarLeftOpen = !GlobalStates.sidebarLeftOpen;
-        }
+        onPressed: root.toggleOpen();
     }
 }

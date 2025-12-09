@@ -66,7 +66,7 @@ BarButton {
             }
         }
 
-        WAppIcon {
+        AppIcon {
             id: iconWidget
             anchors.centerIn: parent
             iconName: root.iconName
