@@ -9,7 +9,6 @@ ScrollBar {
     policy: ScrollBar.AsNeeded
     topPadding: Appearance.rounding.normal
     bottomPadding: Appearance.rounding.normal
-    active: hovered || pressed
 
     contentItem: Rectangle {
         implicitWidth: 4
