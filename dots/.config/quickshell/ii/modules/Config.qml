@@ -604,30 +604,14 @@ Singleton {
                     }
                 }
                 property JsonObject windowRules: JsonObject {
-                    property JsonObject dolphin: JsonObject {
-                        property bool enabled: true
-                        property real opacity: 0.89
-                        property real opacityInactive: 0.8
-                    }
-                    property JsonObject kate: JsonObject {
-                        property bool enabled: true
-                        property real opacity: 0.89
-                        property real opacityInactive: 0.8
-                    }
+                    property real opacityActive: 0.89
+                    property real opacityInactive: 0.8
+                    property real opacityHover: 0.95
                 }
                 property JsonObject terminal: JsonObject {
                     property real kittyBackgroundOpacity: 0.8
                 }
-                // Theme mode overrides
-                // Note: Currently duplicates some base config structure for clarity.
-                // Future improvement: Could use inheritance/defaults to reduce duplication.
-                property JsonObject themeModes: JsonObject {
-                    property JsonObject light: JsonObject {
-                        property JsonObject general: JsonObject {
-                            property JsonObject gaps: JsonObject {
-                                property int gapsIn: 3
-                                property int gapsOut: 4
-                            }
+            }
                             property JsonObject border: JsonObject {
                                 property string colActiveBorder: "rgba(0DB7D4FF)"
                                 property string colInactiveBorder: "rgba(31313600)"

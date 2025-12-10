@@ -27,40 +27,16 @@ mkdir -p "$HYPR_CONFIG_DIR/hyprland"
 mkdir -p "$HYPR_CONFIG_DIR/custom"
 mkdir -p "$(dirname "$KITTY_CONF")"
 
-# Determine current mode (dark or light)
-get_current_mode() {
-    current_mode=$(gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null | tr -d "'")
-    if [[ "$current_mode" == "prefer-dark" ]]; then
-        echo "dark"
-    else
-        echo "light"
-    fi
-}
-
-# Get config value with mode override
+# Get config value
 get_config_value() {
-    local base_path="$1"
-    local mode="$2"
-    
-    # Try to get mode-specific value first
-    if [ -n "$mode" ]; then
-        local mode_path=".hyprland.themeModes.${mode}.${base_path#.hyprland.}"
-        local mode_value=$(jq -r "$mode_path" "$SHELL_CONFIG_FILE" 2>/dev/null)
-        if [ "$mode_value" != "null" ] && [ -n "$mode_value" ]; then
-            echo "$mode_value"
-            return
-        fi
-    fi
-    
-    # Fall back to base value
-    local base_value=$(jq -r "$base_path" "$SHELL_CONFIG_FILE" 2>/dev/null)
-    echo "$base_value"
+    local path="$1"
+    local value=$(jq -r "$path" "$SHELL_CONFIG_FILE" 2>/dev/null)
+    echo "$value"
 }
 
 # Apply general.conf settings
 apply_general_conf() {
-    local mode="$1"
-    echo "Applying general.conf settings for mode: $mode"
+    echo "Applying general.conf settings"
     
     # Backup original file
     if [ -f "$HYPRLAND_GENERAL_CONF" ]; then
@@ -68,17 +44,17 @@ apply_general_conf() {
     fi
     
     # Get values from config
-    local gaps_in=$(get_config_value ".hyprland.general.gaps.gapsIn" "$mode")
-    local gaps_out=$(get_config_value ".hyprland.general.gaps.gapsOut" "$mode")
-    local gaps_workspaces=$(get_config_value ".hyprland.general.gaps.gapsWorkspaces" "$mode")
-    local border_size=$(get_config_value ".hyprland.general.border.borderSize" "$mode")
-    local col_active=$(get_config_value ".hyprland.general.border.colActiveBorder" "$mode")
-    local col_inactive=$(get_config_value ".hyprland.general.border.colInactiveBorder" "$mode")
-    local rounding=$(get_config_value ".hyprland.decoration.rounding" "$mode")
-    local blur_enabled=$(get_config_value ".hyprland.decoration.blur.enabled" "$mode")
-    local blur_size=$(get_config_value ".hyprland.decoration.blur.size" "$mode")
-    local blur_passes=$(get_config_value ".hyprland.decoration.blur.passes" "$mode")
-    local blur_vibrancy=$(get_config_value ".hyprland.decoration.blur.vibrancy" "$mode")
+    local gaps_in=$(get_config_value ".hyprland.general.gaps.gapsIn")
+    local gaps_out=$(get_config_value ".hyprland.general.gaps.gapsOut")
+    local gaps_workspaces=$(get_config_value ".hyprland.general.gaps.gapsWorkspaces")
+    local border_size=$(get_config_value ".hyprland.general.border.borderSize")
+    local col_active=$(get_config_value ".hyprland.general.border.colActiveBorder")
+    local col_inactive=$(get_config_value ".hyprland.general.border.colInactiveBorder")
+    local rounding=$(get_config_value ".hyprland.decoration.rounding")
+    local blur_enabled=$(get_config_value ".hyprland.decoration.blur.enabled")
+    local blur_size=$(get_config_value ".hyprland.decoration.blur.size")
+    local blur_passes=$(get_config_value ".hyprland.decoration.blur.passes")
+    local blur_vibrancy=$(get_config_value ".hyprland.decoration.blur.vibrancy")
     
     # Read the file and update values
     if [ -f "$HYPRLAND_GENERAL_CONF" ]; then
@@ -113,55 +89,46 @@ apply_general_conf() {
     fi
 }
 
-# Apply window rules
+# Apply window rules - using opacity variables
 apply_window_rules() {
-    local mode="$1"
-    echo "Applying window rules for mode: $mode"
+    echo "Applying window opacity variables"
     
     # Backup original file
     if [ -f "$CUSTOM_RULES_CONF" ]; then
         cp "$CUSTOM_RULES_CONF" "$CUSTOM_RULES_CONF.bak"
     fi
     
-    # Get values from config
-    local dolphin_enabled=$(get_config_value ".hyprland.windowRules.dolphin.enabled" "$mode")
-    local dolphin_opacity=$(get_config_value ".hyprland.windowRules.dolphin.opacity" "$mode")
-    local dolphin_opacity_inactive=$(get_config_value ".hyprland.windowRules.dolphin.opacityInactive" "$mode")
-    
-    local kate_enabled=$(get_config_value ".hyprland.windowRules.kate.enabled" "$mode")
-    local kate_opacity=$(get_config_value ".hyprland.windowRules.kate.opacity" "$mode")
-    local kate_opacity_inactive=$(get_config_value ".hyprland.windowRules.kate.opacityInactive" "$mode")
+    # Get opacity values from config
+    local opacity_active=$(get_config_value ".hyprland.windowRules.opacityActive")
+    local opacity_inactive=$(get_config_value ".hyprland.windowRules.opacityInactive")
+    local opacity_hover=$(get_config_value ".hyprland.windowRules.opacityHover")
     
     if [ -f "$CUSTOM_RULES_CONF" ]; then
-        # Remove existing Dolphin opacity rules
-        sed -i '/# Rule for Dolphin transparency/,/windowrulev2.*dolphin/d' "$CUSTOM_RULES_CONF"
-        sed -i '/# Regra para transparência do Dolphin/,/windowrulev2.*dolphin/d' "$CUSTOM_RULES_CONF"
+        # Create or update the opacity variables section at the top of the file
+        # First, remove old opacity variables section if it exists
+        sed -i '/# Opacity Variables - Managed by illogical-impulse/,/# End Opacity Variables/d' "$CUSTOM_RULES_CONF"
         
-        # Remove existing Kate opacity rules
-        sed -i '/# Rule for Kate transparency/,/windowrulev2.*kate/d' "$CUSTOM_RULES_CONF"
-        sed -i '/# Regra para transparência do Kate/,/windowrulev2.*kate/d' "$CUSTOM_RULES_CONF"
+        # Create temp file with opacity variables at the top
+        local temp_file="${CUSTOM_RULES_CONF}.tmp"
+        {
+            echo "# Opacity Variables - Managed by illogical-impulse"
+            echo "# Use these variables in your window rules:"
+            echo "# windowrulev2 = opacity \$OPACITY_ACTIVE override \$OPACITY_INACTIVE override, class:^(yourapp)\$"
+            echo "\$OPACITY_ACTIVE = $opacity_active"
+            echo "\$OPACITY_INACTIVE = $opacity_inactive"
+            echo "\$OPACITY_HOVER = $opacity_hover"
+            echo "# End Opacity Variables"
+            echo ""
+            cat "$CUSTOM_RULES_CONF"
+        } > "$temp_file"
         
-        # Add new rules if enabled
-        if [ "$dolphin_enabled" == "true" ]; then
-            echo "" >> "$CUSTOM_RULES_CONF"
-            echo "# Rule for Dolphin transparency" >> "$CUSTOM_RULES_CONF"
-            echo "windowrulev2 = opacity $dolphin_opacity override $dolphin_opacity_inactive override, class:^(org.kde.dolphin)$" >> "$CUSTOM_RULES_CONF"
-            echo "windowrulev2 = opacity $dolphin_opacity override $dolphin_opacity_inactive override, class:^(dolphin)$" >> "$CUSTOM_RULES_CONF"
-        fi
-        
-        if [ "$kate_enabled" == "true" ]; then
-            echo "" >> "$CUSTOM_RULES_CONF"
-            echo "# Rule for Kate transparency" >> "$CUSTOM_RULES_CONF"
-            echo "windowrulev2 = opacity $kate_opacity override $kate_opacity_inactive override, class:^(org.kde.kate)$" >> "$CUSTOM_RULES_CONF"
-            echo "windowrulev2 = opacity $kate_opacity override $kate_opacity_inactive override, class:^(kate)$" >> "$CUSTOM_RULES_CONF"
-        fi
+        mv "$temp_file" "$CUSTOM_RULES_CONF"
     fi
 }
 
 # Apply kitty.conf settings
 apply_kitty_conf() {
-    local mode="$1"
-    echo "Applying kitty.conf settings for mode: $mode"
+    echo "Applying kitty.conf settings"
     
     # Backup original file
     if [ -f "$KITTY_CONF" ]; then
@@ -169,7 +136,7 @@ apply_kitty_conf() {
     fi
     
     # Get value from config
-    local bg_opacity=$(get_config_value ".hyprland.terminal.kittyBackgroundOpacity" "$mode")
+    local bg_opacity=$(get_config_value ".hyprland.terminal.kittyBackgroundOpacity")
     
     if [ -f "$KITTY_CONF" ]; then
         # Update background_opacity (POSIX-compatible pattern)
@@ -185,12 +152,11 @@ reload_hyprland() {
 
 # Main execution
 main() {
-    local mode=$(get_current_mode)
-    echo "Current theme mode: $mode"
+    echo "Applying Hyprland configuration..."
     
-    apply_general_conf "$mode"
-    apply_window_rules "$mode"
-    apply_kitty_conf "$mode"
+    apply_general_conf
+    apply_window_rules
+    apply_kitty_conf
     reload_hyprland
     
     echo "Hyprland configuration applied successfully!"
