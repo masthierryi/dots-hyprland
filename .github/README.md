@@ -26,17 +26,169 @@
   - **Transparent installation**: Every command is shown before it's run
 </details>
 <details> 
-  <summary>Installation (illogical-impulse Quickshell)</summary>
+  <summary>Installation (illogical-impulse Quickshell) (normal)</summary>
 
    - _If you're new to Linux and decide to use Hyprland, you're in for a tough ride._
    - Just run `bash <(curl -s https://ii.clsty.link/get)`
      - Or, clone this repo and run `./setup install`
      - See [document](https://ii.clsty.link/en/ii-qs/01setup/) for details.
-   - **Default keybinds**: Should be somewhat familiar to Windows or GNOME users. Important ones:
-     - `Super`+`/` = keybind list
-     - `Super`+`Enter` = terminal
-     - If for whatever reason the keybind list widget does not work, here's an image:
-     <img width="1412" height="828" alt="image" src="https://github.com/user-attachments/assets/8f7bd216-9e03-47e3-8709-0008772a4133" />
+
+</details>
+
+<details> 
+  <summary>Installation from archinstall boot (under test) </summary>
+
+1) archinstall (live USB)
+```
+    Profile: No Desktop
+    Kernel: linux
+    Microcode: amd-ucode
+    Bootloader: grub
+    Audio: PipeWire
+    Network: NetworkManager
+    Graphics: AMD/ATI
+    Timezone/Locale/Keyboard: sua escolha
+    Multilib: habilite se precisar de 32-bit/Steam
+    Usuário: crie e marque wheel/admin
+```
+Cole em “Additional packages” (essencial para Hypr + dots end-4):
+Code
+```
+base-devel linux-headers amd-ucode git sudo polkit polkit-gnome seatd pipewire pipewire-alsa pipewire-pulse wireplumber xdg-desktop-portal xdg-desktop-portal-hyprland bluez bluez-utils ntfs-3g xdg-user-dirs xdg-utils fwupd zram-generator ufw apparmor mesa vulkan-icd-loader libva-mesa-driver vulkan-radeon wayland wayland-protocols xorg-xwayland qt5-wayland qt6-wayland hyprland waybar rofi swww hyprpaper hyprlock hypridle hyprpicker grim slurp swappy swaync wlogout cliphist wl-clipboard libnotify bc brightnessctl pamixer playerctl gammastep xsettingsd kitty foot fish starship eza btop fzf fastfetch noto-fonts noto-fonts-emoji ttf-nerd-fonts-symbols ttf-jetbrains-mono-nerd ttf-liberation ttf-hack adwaita-icon-theme gnome-themes-extra nano neovim unzip unrar zip rsync curl wget bat fd ripgrep tree jq python flatpak
+```
+(Obs: removidos clang/cmake/make/gcc explícitos porque base-devel já traz; removidos nodejs/npm/go/rustup/nmap/p7zip; não instale VLC duas vezes — escolha pacman ou flatpak, não ambos.)
+
+Finalize o archinstall e reboot.
+2) Pós-instalação (TTY)
+
+Ajuste USER:
+bash
+```
+USER=seuusuario
+sudo usermod -aG wheel,video,input,seat,audio,storage "$USER"
+```
+Serviços:
+
+bash
+```
+sudo systemctl enable --now NetworkManager
+# Bluetooth só se usar:
+sudo systemctl enable --now bluetooth
+sudo systemctl enable --now seatd
+sudo systemctl enable --now fstrim.timer
+sudo systemctl enable --now systemd-timesyncd
+sudo systemctl enable --now systemd-zram-setup@zram0
+sudo systemctl enable --now ufw
+```
+(AppArmor existe no Arch, mas requer configuração extra; deixe como opcional.)
+
+ZRAM (opcional, metade da RAM):
+bash
+```
+sudo tee /etc/systemd/zram-generator.conf > /dev/null <<'EOF'
+[zram0]
+zram-size = ram / 2
+compression-algorithm = zstd
+EOF
+sudo systemctl daemon-reload
+sudo systemctl restart systemd-zram-setup@zram0
+```
+Shell (opcional):
+bash
+```
+chsh -s /usr/bin/fish "$USER"
+```
+3) Yay (AUR), como usuário
+bash
+```
+cd ~
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si --noconfirm
+cd ..
+rm -rf yay
+```
+4) Instalador do end-4 (forma segura, sem “pipe to bash”)
+
+Siga o método recomendado em https://ii.clsty.link/en/ii-qs/01setup/#automated-installation, mas baixe antes de executar:
+bash
+```
+cd ~
+curl -fsSL https://ii.clsty.link/get -o ii-install.sh
+chmod +x ii-install.sh
+```
+# inspecione antes de rodar
+```
+head -n 40 ii-install.sh
+sed -n '1,200p' ii-install.sh | less
+```
+# execute (como usuário)
+```
+bash ii-install.sh 2>&1 | tee ~/ii-install.log
+```
+(Se o script pedir algo como root/sudo, siga as instruções dele. Não ppipe (bash <(curl ...)) se quiser máxima segurança; baixar e inspecionar é melhor.)
+5) Autostart e polkit/portais
+
+    Polkit agent: polkit-gnome já instalado; verifique autostart na sessão.
+    Portais: xdg-desktop-portal + xdg-desktop-portal-hyprland já instalados.
+    Autostart Hyprland (caso o script não configure greetd):
+    ```
+        Fish (~/.config/fish/config.fish):
+        fish
+    ```
+```
+if status is-login
+    if test -z "$WAYLAND_DISPLAY" -a "$XDG_VTNR" = 1
+        exec Hyprland
+    end
+end
+```
+Bash (~/.bash_profile):
+bash
+        ```
+        if [ -z "${WAYLAND_DISPLAY-}" ] && [ "${XDG_VTNR-}" -eq 1 ]; then
+          exec Hyprland
+        fi
+        ```
+        Se usar greetd/tuigreet conforme o script, não use o autostart acima (escolha um método).
+
+6) Suas configs próprias depois
+
+    Faça backup de ~/.config antes de sobrepor.
+    Sobreponha apenas o que quiser dos seus arquivos.
+    Reaplique permissões de scripts:
+    bash
+```
+find ~/.config -type f -name '*.sh' -exec chmod +x {} \; 2>/dev/null
+```
+Atualize cache de fontes se instalar novas:
+bash
+```
+    fc-cache -fv
+```
+7) Firewall
+
+    UFW já instalado: `sudo systemctl enable --now ufw`
+    Configure regras conforme necessidade (ex.: sudo ufw default deny incoming, sudo ufw allow 22/tcp se precisar SSH).
+
+8) Flatpak
+
+Se for usar: add flathub e escolha apps (evite duplicar VLC se já instalou via pacman):
+bash
+
+```
+sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+```
+# exemplo (se não tiver instalado por pacman):
+
+```flatpak install -y flathub org.videolan.VLC```
+
+9) Teste final
+bash
+```
+sudo reboot
+```
+Login no TTY1; Hyprland deve subir via autostart/greetd. Caso não, rode Hyprland manualmente.
 
 
 </details>
