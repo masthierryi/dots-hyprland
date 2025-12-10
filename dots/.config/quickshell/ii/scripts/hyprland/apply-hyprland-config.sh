@@ -82,22 +82,34 @@ apply_general_conf() {
     
     # Read the file and update values
     if [ -f "$HYPRLAND_GENERAL_CONF" ]; then
-        # Update gaps
-        sed -i "s/^\(\s*gaps_in\s*=\s*\).*/\1$gaps_in/" "$HYPRLAND_GENERAL_CONF"
-        sed -i "s/^\(\s*gaps_out\s*=\s*\).*/\1$gaps_out/" "$HYPRLAND_GENERAL_CONF"
-        sed -i "s/^\(\s*gaps_workspaces\s*=\s*\).*/\1$gaps_workspaces/" "$HYPRLAND_GENERAL_CONF"
+        # Update gaps (within general block)
+        sed -i '/^general\s*{/,/^}/ {
+            s/^\(\s*gaps_in\s*=\s*\).*/\1'"$gaps_in"'/
+            s/^\(\s*gaps_out\s*=\s*\).*/\1'"$gaps_out"'/
+            s/^\(\s*gaps_workspaces\s*=\s*\).*/\1'"$gaps_workspaces"'/
+        }' "$HYPRLAND_GENERAL_CONF"
         
-        # Update border
-        sed -i "s/^\(\s*border_size\s*=\s*\).*/\1$border_size/" "$HYPRLAND_GENERAL_CONF"
-        sed -i "s|^\(\s*col.active_border\s*=\s*\).*|\1$col_active|" "$HYPRLAND_GENERAL_CONF"
-        sed -i "s|^\(\s*col.inactive_border\s*=\s*\).*|\1$col_inactive|" "$HYPRLAND_GENERAL_CONF"
+        # Update border (within general block)
+        sed -i '/^general\s*{/,/^}/ {
+            s/^\(\s*border_size\s*=\s*\).*/\1'"$border_size"'/
+            s|^\(\s*col\.active_border\s*=\s*\).*|\1'"$col_active"'|
+            s|^\(\s*col\.inactive_border\s*=\s*\).*|\1'"$col_inactive"'|
+        }' "$HYPRLAND_GENERAL_CONF"
         
-        # Update decoration
-        sed -i "s/^\(\s*rounding\s*=\s*\).*/\1$rounding/" "$HYPRLAND_GENERAL_CONF"
-        sed -i "s/^\(\s*enabled\s*=\s*\).*/\1$blur_enabled/" "$HYPRLAND_GENERAL_CONF"
-        sed -i "s/^\(\s*size\s*=\s*\).*/\1$blur_size/" "$HYPRLAND_GENERAL_CONF"
-        sed -i "s/^\(\s*passes\s*=\s*\).*/\1$blur_passes/" "$HYPRLAND_GENERAL_CONF"
-        sed -i "s/^\(\s*vibrancy\s*=\s*\).*/\1$blur_vibrancy/" "$HYPRLAND_GENERAL_CONF"
+        # Update decoration rounding
+        sed -i '/^decoration\s*{/,/^}/ {
+            s/^\(\s*rounding\s*=\s*\).*/\1'"$rounding"'/
+        }' "$HYPRLAND_GENERAL_CONF"
+        
+        # Update blur settings (within decoration { blur { } } block)
+        sed -i '/^decoration\s*{/,/^}/ {
+            /blur\s*{/,/^\s*}/ {
+                s/^\(\s*enabled\s*=\s*\).*/\1'"$blur_enabled"'/
+                s/^\(\s*size\s*=\s*\).*/\1'"$blur_size"'/
+                s/^\(\s*passes\s*=\s*\).*/\1'"$blur_passes"'/
+                s/^\(\s*vibrancy\s*=\s*\).*/\1'"$blur_vibrancy"'/
+            }
+        }' "$HYPRLAND_GENERAL_CONF"
     fi
 }
 
@@ -122,22 +134,24 @@ apply_window_rules() {
     
     if [ -f "$CUSTOM_RULES_CONF" ]; then
         # Remove existing Dolphin opacity rules
+        sed -i '/# Rule for Dolphin transparency/,/windowrulev2.*dolphin/d' "$CUSTOM_RULES_CONF"
         sed -i '/# Regra para transparência do Dolphin/,/windowrulev2.*dolphin/d' "$CUSTOM_RULES_CONF"
         
         # Remove existing Kate opacity rules
+        sed -i '/# Rule for Kate transparency/,/windowrulev2.*kate/d' "$CUSTOM_RULES_CONF"
         sed -i '/# Regra para transparência do Kate/,/windowrulev2.*kate/d' "$CUSTOM_RULES_CONF"
         
         # Add new rules if enabled
         if [ "$dolphin_enabled" == "true" ]; then
             echo "" >> "$CUSTOM_RULES_CONF"
-            echo "# Regra para transparência do Dolphin" >> "$CUSTOM_RULES_CONF"
+            echo "# Rule for Dolphin transparency" >> "$CUSTOM_RULES_CONF"
             echo "windowrulev2 = opacity $dolphin_opacity override $dolphin_opacity_inactive override, class:^(org.kde.dolphin)$" >> "$CUSTOM_RULES_CONF"
             echo "windowrulev2 = opacity $dolphin_opacity override $dolphin_opacity_inactive override, class:^(dolphin)$" >> "$CUSTOM_RULES_CONF"
         fi
         
         if [ "$kate_enabled" == "true" ]; then
             echo "" >> "$CUSTOM_RULES_CONF"
-            echo "# Regra para transparência do Kate" >> "$CUSTOM_RULES_CONF"
+            echo "# Rule for Kate transparency" >> "$CUSTOM_RULES_CONF"
             echo "windowrulev2 = opacity $kate_opacity override $kate_opacity_inactive override, class:^(org.kde.kate)$" >> "$CUSTOM_RULES_CONF"
             echo "windowrulev2 = opacity $kate_opacity override $kate_opacity_inactive override, class:^(kate)$" >> "$CUSTOM_RULES_CONF"
         fi
@@ -158,8 +172,8 @@ apply_kitty_conf() {
     local bg_opacity=$(get_config_value ".hyprland.terminal.kittyBackgroundOpacity" "$mode")
     
     if [ -f "$KITTY_CONF" ]; then
-        # Update background_opacity
-        sed -i "s/^\(\s*background_opacity\s*\).*/\1$bg_opacity/" "$KITTY_CONF"
+        # Update background_opacity (with or without space around value)
+        sed -i "s/^\s*background_opacity\s\+.*/background_opacity $bg_opacity/" "$KITTY_CONF"
     fi
 }
 
