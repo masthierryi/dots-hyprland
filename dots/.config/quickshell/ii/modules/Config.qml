@@ -570,6 +570,122 @@ Singleton {
                 property bool centerTitle: true
             }
 
+            property JsonObject hyprland: JsonObject {
+                property JsonObject general: JsonObject {
+                    property JsonObject gaps: JsonObject {
+                        property int gapsIn: 3
+                        property int gapsOut: 4
+                        property int gapsWorkspaces: 50
+                    }
+                    property JsonObject border: JsonObject {
+                        property int borderSize: 2
+                        property string colActiveBorder: "rgba(0DB7D4FF)"
+                        property string colInactiveBorder: "rgba(31313600)"
+                    }
+                    property JsonObject snap: JsonObject {
+                        property bool enabled: true
+                        property int windowGap: 4
+                        property int monitorGap: 5
+                        property bool respectGaps: true
+                    }
+                }
+                property JsonObject decoration: JsonObject {
+                    property int rounding: 4
+                    property JsonObject blur: JsonObject {
+                        property bool enabled: true
+                        property bool xray: true
+                        property int size: 3
+                        property int passes: 0
+                        property real brightness: 1
+                        property real noise: 0.4
+                        property real contrast: 0.9
+                        property real vibrancy: 0.5
+                        property real vibrancyDarkness: 0.1
+                    }
+                }
+                property JsonObject windowRules: JsonObject {
+                    property JsonObject dolphin: JsonObject {
+                        property bool enabled: true
+                        property real opacity: 0.89
+                        property real opacityInactive: 0.8
+                    }
+                    property JsonObject kate: JsonObject {
+                        property bool enabled: true
+                        property real opacity: 0.89
+                        property real opacityInactive: 0.8
+                    }
+                }
+                property JsonObject terminal: JsonObject {
+                    property real kittyBackgroundOpacity: 0.8
+                }
+                property JsonObject themeModes: JsonObject {
+                    property JsonObject light: JsonObject {
+                        property JsonObject general: JsonObject {
+                            property JsonObject gaps: JsonObject {
+                                property int gapsIn: 3
+                                property int gapsOut: 4
+                            }
+                            property JsonObject border: JsonObject {
+                                property string colActiveBorder: "rgba(0DB7D4FF)"
+                                property string colInactiveBorder: "rgba(31313600)"
+                            }
+                        }
+                        property JsonObject decoration: JsonObject {
+                            property int rounding: 4
+                            property JsonObject blur: JsonObject {
+                                property int passes: 0
+                                property real vibrancy: 0.5
+                            }
+                        }
+                        property JsonObject windowRules: JsonObject {
+                            property JsonObject dolphin: JsonObject {
+                                property real opacity: 0.89
+                                property real opacityInactive: 0.8
+                            }
+                            property JsonObject kate: JsonObject {
+                                property real opacity: 0.89
+                                property real opacityInactive: 0.8
+                            }
+                        }
+                        property JsonObject terminal: JsonObject {
+                            property real kittyBackgroundOpacity: 0.8
+                        }
+                    }
+                    property JsonObject dark: JsonObject {
+                        property JsonObject general: JsonObject {
+                            property JsonObject gaps: JsonObject {
+                                property int gapsIn: 3
+                                property int gapsOut: 4
+                            }
+                            property JsonObject border: JsonObject {
+                                property string colActiveBorder: "rgba(0DB7D4FF)"
+                                property string colInactiveBorder: "rgba(31313600)"
+                            }
+                        }
+                        property JsonObject decoration: JsonObject {
+                            property int rounding: 4
+                            property JsonObject blur: JsonObject {
+                                property int passes: 0
+                                property real vibrancy: 0.5
+                            }
+                        }
+                        property JsonObject windowRules: JsonObject {
+                            property JsonObject dolphin: JsonObject {
+                                property real opacity: 0.89
+                                property real opacityInactive: 0.8
+                            }
+                            property JsonObject kate: JsonObject {
+                                property real opacity: 0.89
+                                property real opacityInactive: 0.8
+                            }
+                        }
+                        property JsonObject terminal: JsonObject {
+                            property real kittyBackgroundOpacity: 0.8
+                        }
+                    }
+                }
+            }
+
             property JsonObject hacks: JsonObject {
                 property int arbitraryRaceConditionDelay: 20 // milliseconds
             }
