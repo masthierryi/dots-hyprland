@@ -11,14 +11,21 @@ KITTY_CONF="$XDG_CONFIG_HOME/kitty/kitty.conf"
 # Check if config file exists
 if [ ! -f "$SHELL_CONFIG_FILE" ]; then
     echo "Config file not found: $SHELL_CONFIG_FILE"
+    notify-send "Hyprland Settings" "Config file not found" -a "illogical-impulse" -u critical 2>/dev/null || true
     exit 1
 fi
 
 # Check if jq is installed
 if ! command -v jq &> /dev/null; then
     echo "jq is required but not installed"
+    notify-send "Hyprland Settings" "jq is required but not installed" -a "illogical-impulse" -u critical 2>/dev/null || true
     exit 1
 fi
+
+# Create config directories if they don't exist
+mkdir -p "$HYPR_CONFIG_DIR/hyprland"
+mkdir -p "$HYPR_CONFIG_DIR/custom"
+mkdir -p "$(dirname "$KITTY_CONF")"
 
 # Determine current mode (dark or light)
 get_current_mode() {
