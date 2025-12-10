@@ -155,43 +155,45 @@ ContentPage {
 
                 StyledText {
                     text: Translation.tr("Set global opacity values that can be used in your window rules.\nUse $OPACITY_ACTIVE, $OPACITY_INACTIVE, and $OPACITY_HOVER variables in custom/rules.conf\nwindowrulev2 = opacity $OPACITY_ACTIVE override $OPACITY_INACTIVE override, class:^(kate)$")
-                    color: Appearance.colors.colSecondary
+                    color: Appearance.colors.colSubtext
                     wrapMode: Text.Wrap
                     font.pixelSize: Appearance.font.pixelSize.smaller
                     Layout.leftMargin: 48
                     Layout.rightMargin: 48
                 }
             }
-        }
 
-        ContentSection {
             RippleButton {
-
-                buttonRadius: 20
-                padding: 12
+                Layout.topMargin: 15
+                buttonRadius: Appearance.rounding.normal
+                topPadding: 14
+                bottomPadding: 14
+                leftPadding: 40
+                rightPadding: 40
                 colBackground: Appearance.colors.colPrimaryContainer
                 colBackgroundHover: Appearance.colors.colPrimaryContainerHover
+                Layout.alignment: Qt.AlignCenter
 
                 onClicked: {
                     Quickshell.execDetached([Directories.scriptPath + "/hyprland/apply-hyprland-config.sh"]);
                 }
                 contentItem: RowLayout {
-                    spacing: 10
                     StyledText {
                         text: Translation.tr("Apply")
                         color: Appearance.colors.colOnPrimaryContainer
-                        font.pixelSize: Appearance.font.pixelSize.larger
+                        font.pixelSize: Appearance.font.pixelSize.normal
                     }
                 }
             }
 
             StyledText {
                 text: Translation.tr("Note: Settings will be automatically applied when you toggle light/dark mode\nSome apps need to be reloaded for this to apply")
-                color: Appearance.colors.colSecondary
+                color: Appearance.colors.colSubtext
                 wrapMode: Text.Wrap
                 font.pixelSize: Appearance.font.pixelSize.smaller
-                Layout.leftMargin: 48
                 Layout.topMargin: 10
+                Layout.fillWidth: true
+                horizontalAlignment: Text.AlignHCenter
             }
         }
 }
