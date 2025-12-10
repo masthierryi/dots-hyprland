@@ -66,30 +66,30 @@ apply_general_conf() {
     # Read the file and update values
     if [ -f "$HYPRLAND_GENERAL_CONF" ]; then
         # Update gaps (within general block)
-        sed -i '/^general\s*{/,/^}/ {
-            s/^\(\s*gaps_in\s*=\s*\).*/\1'"$gaps_in"'/
-            s/^\(\s*gaps_out\s*=\s*\).*/\1'"$gaps_out"'/
-            s/^\(\s*gaps_workspaces\s*=\s*\).*/\1'"$gaps_workspaces"'/
+        sed -i '/^general[[:space:]]*{/,/^}/ {
+            s/^\([[:space:]]*gaps_in[[:space:]]*=[[:space:]]*\).*/\1'"$gaps_in"'/
+            s/^\([[:space:]]*gaps_out[[:space:]]*=[[:space:]]*\).*/\1'"$gaps_out"'/
+            s/^\([[:space:]]*gaps_workspaces[[:space:]]*=[[:space:]]*\).*/\1'"$gaps_workspaces"'/
         }' "$HYPRLAND_GENERAL_CONF"
 
         # Update border (within general block)
-        sed -i '/^general\s*{/,/^}/ {
-            s/^\(\s*border_size\s*=\s*\).*/\1'"$border_size"'/
-            s|^\(\s*col\.active_border\s*=\s*\).*|\1'"$col_active"'|
-            s|^\(\s*col\.inactive_border\s*=\s*\).*|\1'"$col_inactive"'|
+        sed -i '/^general[[:space:]]*{/,/^}/ {
+            s/^\([[:space:]]*border_size[[:space:]]*=[[:space:]]*\).*/\1'"$border_size"'/
+            s|^\([[:space:]]*col\.active_border[[:space:]]*=[[:space:]]*\).*|\1'"$col_active"'|
+            s|^\([[:space:]]*col\.inactive_border[[:space:]]*=[[:space:]]*\).*|\1'"$col_inactive"'|
         }' "$HYPRLAND_GENERAL_CONF"
 
         # Update decoration rounding
-        sed -i '/^decoration\s*{/,/^}/ {
-            s/^\(\s*rounding\s*=\s*\).*/\1'"$rounding"'/
+        sed -i '/^decoration[[:space:]]*{/,/^}/ {
+            s/^\([[:space:]]*rounding[[:space:]]*=[[:space:]]*\).*/\1'"$rounding"'/
         }' "$HYPRLAND_GENERAL_CONF"
 
         # Update blur settings (within decoration { blur { } } block)
-        sed -i '/^decoration\s*{/,/^}/ {
-            /blur\s*{/,/^\s*}/ {
-                s/^\(\s*enabled\s*=\s*\).*/\1'"$blur_enabled"'/
-                s/^\(\s*size\s*=\s*\).*/\1'"$blur_size"'/
-                s/^\(\s*passes\s*=\s*\).*/\1'"$blur_passes"'/
+        sed -i '/^decoration[[:space:]]*{/,/^}/ {
+            /blur[[:space:]]*{/,/^[[:space:]]*}/ {
+                s/^\([[:space:]]*enabled[[:space:]]*=[[:space:]]*\).*/\1'"$blur_enabled"'/
+                s/^\([[:space:]]*size[[:space:]]*=[[:space:]]*\).*/\1'"$blur_size"'/
+                s/^\([[:space:]]*passes[[:space:]]*=[[:space:]]*\).*/\1'"$blur_passes"'/
             }
         }' "$HYPRLAND_GENERAL_CONF"
     fi
