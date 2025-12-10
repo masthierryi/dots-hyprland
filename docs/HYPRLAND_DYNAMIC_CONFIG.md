@@ -1,13 +1,13 @@
 # Dynamic Hyprland Configuration
 
-This feature allows you to dynamically configure Hyprland settings (gaps, borders, window opacity, terminal opacity) through the illogical-impulse settings GUI, with automatic theme-aware adjustments for light and dark modes.
+This feature allows you to dynamically configure Hyprland settings (gaps, borders, window opacity, terminal opacity) through the illogical-impulse settings GUI.
 
 ## Features
 
 - **GUI Configuration**: Configure Hyprland settings through the settings app
-- **Theme-Aware Settings**: Different settings for light and dark modes
-- **Automatic Application**: Settings are automatically applied when toggling between light and dark modes
-- **Per-Application Opacity**: Configure opacity for specific applications (Dolphin, Kate, Kitty)
+- **Opacity Variables**: Set global opacity values that can be used in any window rule
+- **Automatic Application**: Click a button to apply settings immediately
+- **Per-Window Control**: Use opacity variables in your custom window rules
 
 ## Configuration
 
@@ -16,6 +16,7 @@ This feature allows you to dynamically configure Hyprland settings (gaps, border
 1. Open the illogical-impulse settings app
 2. Navigate to the "Hyprland" tab (window icon)
 3. Adjust the settings as desired
+4. Click "Apply Hyprland Settings Now" button
 
 ### Available Settings
 
@@ -24,22 +25,18 @@ This feature allows you to dynamically configure Hyprland settings (gaps, border
 - **Outer Gaps**: Spacing from screen edges
 - **Workspace Gaps**: Spacing between workspaces
 - **Border Size**: Window border thickness
-- **Border Colors**: Active and inactive border colors (currently view-only, edit in config file)
 
 #### Decoration
 - **Corner Rounding**: Window corner radius
 - **Blur Settings**: Enable/disable blur, blur size, passes, and vibrancy
 
 #### Window Opacity Rules
-- **Dolphin File Manager**: Enable opacity rule and set active/inactive opacity
-- **Kate Text Editor**: Enable opacity rule and set active/inactive opacity
+- **Active Opacity**: Opacity for focused windows
+- **Inactive Opacity**: Opacity for unfocused windows
+- **Hover Opacity**: Opacity when hovering over windows
 
 #### Terminal Settings
 - **Kitty Background Opacity**: Set terminal background transparency
-
-#### Theme Mode Overrides
-- **Light Mode**: Specify different opacity values for light mode
-- **Dark Mode**: Specify different opacity values for dark mode
 
 ## How It Works
 
@@ -59,41 +56,56 @@ All settings are stored in `~/.config/illogical-impulse/config.json` under the `
       "blur": { "enabled": true, "size": 3, ... }
     },
     "windowRules": {
-      "dolphin": { "enabled": true, "opacity": 0.89, "opacityInactive": 0.8 },
-      "kate": { "enabled": true, "opacity": 0.89, "opacityInactive": 0.8 }
+      "opacityActive": 0.89,
+      "opacityInactive": 0.8,
+      "opacityHover": 0.95
     },
     "terminal": {
       "kittyBackgroundOpacity": 0.8
-    },
-    "themeModes": {
-      "light": { /* light mode overrides */ },
-      "dark": { /* dark mode overrides */ }
     }
   }
 }
 ```
 
-### Automatic Application
+### Opacity Variables System
 
-The apply script (`scripts/hyprland/apply-hyprland-config.sh`) is automatically called when:
-1. You toggle between light and dark modes
-2. You manually click "Apply Hyprland Settings Now" in the settings
+The script creates/updates opacity variables at the top of your `~/.config/hypr/custom/rules.conf`:
+
+```bash
+# Opacity Variables - Managed by illogical-impulse
+# Use these variables in your window rules:
+# windowrulev2 = opacity $OPACITY_ACTIVE override $OPACITY_INACTIVE override, class:^(yourapp)$
+$OPACITY_ACTIVE = 0.89
+$OPACITY_INACTIVE = 0.8
+$OPACITY_HOVER = 0.95
+# End Opacity Variables
+```
+
+You can then use these variables in your custom window rules:
+
+```bash
+windowrulev2 = opacity $OPACITY_ACTIVE override $OPACITY_INACTIVE override, class:^(dolphin)$
+windowrulev2 = opacity $OPACITY_ACTIVE override $OPACITY_INACTIVE override, class:^(kate)$
+windowrulev2 = opacity $OPACITY_HOVER override $OPACITY_INACTIVE override, class:^(firefox)$
+```
+
+### Application
+
+The apply script (`scripts/hyprland/apply-hyprland-config.sh`) is called when:
+1. You click "Apply Hyprland Settings Now" button in the settings
+2. You toggle between light and dark modes (automatic integration)
 
 The script:
-1. Detects the current theme mode (light/dark)
-2. Reads settings from the config file, using theme-specific overrides when available
-3. Updates the following files:
+1. Reads settings from the config file
+2. Updates the following files:
    - `~/.config/hypr/hyprland/general.conf` (gaps, borders, decoration)
-   - `~/.config/hypr/custom/rules.conf` (window opacity rules)
+   - `~/.config/hypr/custom/rules.conf` (opacity variables only)
    - `~/.config/kitty/kitty.conf` (terminal opacity)
-4. Reloads Hyprland configuration
+3. Reloads Hyprland configuration
 
 ### Integration with Theme Toggle
 
-The feature is integrated with the existing dark mode toggle. When you toggle between light and dark modes:
-1. The theme switch script (`switchwall.sh`) runs
-2. It calls the Hyprland configuration apply script
-3. Settings are applied based on the new theme mode
+The feature integrates with the existing dark mode toggle. When you toggle themes, the script applies your configured settings.
 
 ## Manual Application
 
