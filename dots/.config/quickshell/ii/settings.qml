@@ -34,6 +34,11 @@ ApplicationWindow {
             component: "modules/settings/GeneralConfig.qml"
         },
         {
+            name: Translation.tr("Hyprland"),
+            icon: "window",
+            component: "modules/settings/HyprlandConfig.qml"
+        },
+        {
             name: Translation.tr("Bar"),
             icon: "toast",
             iconRotation: 180,
@@ -53,11 +58,6 @@ ApplicationWindow {
             name: Translation.tr("Services"),
             icon: "settings",
             component: "modules/settings/ServicesConfig.qml"
-        },
-        {
-            name: Translation.tr("Hyprland"),
-            icon: "window",
-            component: "modules/settings/HyprlandConfig.qml"
         },
         {
             name: Translation.tr("Advanced"),
