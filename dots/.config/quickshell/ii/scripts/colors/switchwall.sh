@@ -8,7 +8,17 @@ CONFIG_DIR="$XDG_CONFIG_HOME/quickshell/$QUICKSHELL_CONFIG_NAME"
 CACHE_DIR="$XDG_CACHE_HOME/quickshell"
 STATE_DIR="$XDG_STATE_HOME/quickshell"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SHELL_CONFIG_FILE="$XDG_CONFIG_HOME/illogical-impulse/config.json"
+
+get_config_file() {
+    local current_mode=$(gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null | tr -d "'")
+    if [[ "$current_mode" == "prefer-dark" ]]; then
+        echo "$XDG_CONFIG_HOME/illogical-impulse/config.json"
+    else
+        echo "$XDG_CONFIG_HOME/illogical-impulse/config-light.json"
+    fi
+}
+SHELL_CONFIG_FILE="$(get_config_file)"
+
 MATUGEN_DIR="$XDG_CONFIG_HOME/matugen"
 terminalscheme="$SCRIPT_DIR/terminal/scheme-base.json"
 
@@ -365,6 +375,12 @@ main() {
                 ;;
         esac
     done
+
+    if [[ "$mode_flag" == "dark" ]]; then
+        SHELL_CONFIG_FILE="$XDG_CONFIG_HOME/illogical-impulse/config.json"
+    elif [[ "$mode_flag" == "light" ]]; then
+        SHELL_CONFIG_FILE="$XDG_CONFIG_HOME/illogical-impulse/config-light.json"
+    fi
 
     # If type_flag is not set, get it from config
     if [[ -z "$type_flag" ]]; then
