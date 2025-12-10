@@ -172,8 +172,8 @@ apply_kitty_conf() {
     local bg_opacity=$(get_config_value ".hyprland.terminal.kittyBackgroundOpacity" "$mode")
     
     if [ -f "$KITTY_CONF" ]; then
-        # Update background_opacity (with or without space around value)
-        sed -i "s/^\s*background_opacity\s\+.*/background_opacity $bg_opacity/" "$KITTY_CONF"
+        # Update background_opacity (POSIX-compatible pattern)
+        sed -i "s/^[[:space:]]*background_opacity[[:space:]][[:space:]]*.*/background_opacity $bg_opacity/" "$KITTY_CONF"
     fi
 }
 

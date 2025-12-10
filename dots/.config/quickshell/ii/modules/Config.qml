@@ -618,6 +618,9 @@ Singleton {
                 property JsonObject terminal: JsonObject {
                     property real kittyBackgroundOpacity: 0.8
                 }
+                // Theme mode overrides
+                // Note: Currently duplicates some base config structure for clarity.
+                // Future improvement: Could use inheritance/defaults to reduce duplication.
                 property JsonObject themeModes: JsonObject {
                     property JsonObject light: JsonObject {
                         property JsonObject general: JsonObject {
