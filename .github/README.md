@@ -61,113 +61,124 @@
 </details>
 
 <div align="center">
-    <h2>• screenshots •</h2>
-    <h3></h3>
-</div>
-
-<div align="center">
     <img src="assets/illogical-impulse.svg" alt="illogical-impulse logo" style="float:left; width:400;">
 </div>
 
-### illogical-impulse<sup>Quickshell</sup>
-
-This is the latest and only supported style. Other stuff are still there mostly for viewing pleasure and not actual use, but code is still available, see below.
-
-Widget system: Quickshell | Support: Yes
-
-[Showcase video](https://www.youtube.com/watch?v=RPwovTInagE)
-
-| AI, settings app | Some widgets |
-|:---|:---------------|
-| <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/ea0154a1-e984-4bb6-a424-23247cefe3c6" /> | <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/6eba0d57-2606-4cea-8993-e6f169e82e70" /> |
-| Window management | Built with love |
-| <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/a7e6d29c-e82c-4934-98db-36c810ec999b" /> | <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/1b806b53-9310-4c63-84a9-cec9e311d439" /> |
-
-### Other styles: Available at the end of the readme.
-
 <div align="center">
-    <h2>• thank you •</h2>
+    <h2>• MASTHIERRYI'S MOD •</h2>
     <h3></h3>
 </div>
 
- - [@clsty](https://github.com/clsty) for making the dotfiles accessible by taking care of the install script and many other things
- - [@midn8hustlr](https://github.com/midn8hustlr) for greatly improving the color generation system
- - [@outfoxxed](https://github.com/outfoxxed/) for being extremely supportive in my Quickshell journey
- - Quickshell: [Soramane](https://github.com/caelestia-dots/shell/), [FridayFaerie](https://github.com/FridayFaerie/quickshell), [nydragon](https://github.com/nydragon/nysh)
- - AGS: [Aylur](https://github.com/Aylur/dotfiles/tree/ags-pre-ts), [kotontrion](https://github.com/kotontrion/dotfiles)
- - EWW: [fufexan](https://github.com/fufexan/dotfiles)
+Showcase prints and records soon:)
 
-<div align="center">
-    <h2>• stonks •</h2>
-    <h3></h3>
-</div>
+ <details> 
+  <summary>Manual changelog</summary>
+GENERAL CHANGES -------------------------------------------
 
-- If you would like to give me some milk😳 (i dont drink coffee): https://github.com/sponsors/end-4
-- Virtual tentacle cat website points chart
+> extra/keyd/default.conf
 
-[![Stargazers over time](https://starchart.cc/end-4/dots-hyprland.svg?variant=adaptive)](https://starchart.cc/end-4/dots-hyprland)
+remaped keyboard with keyd (caps to Lshift+Rshift) (caps -> super) my keyboard is en, but I'm BR, so I hybridized it:)
 
+> dots-extra/fastfetch/config.jsonc
 
-<div align="center">
-    <h2>• inspirations/copying •</h2>
-    <h3></h3>
-</div>
+custom fastfetch and logo
 
- - Inspiration: osu!lazer, Windows 11, Material Design 3, AvdanOS (concept)
- - Copying: The license allows you to. Personally I have absolutely no problem with others redistributing/recreating my work. There's no "stealing" (maybe unless you loudly do weird stuff and violate the license) <sub>(some people actually had to ask smh)</sub>
+> dots-extra/f.bashrc
 
----
+launch kitty with fastfetch 
 
----
+CHANGES MADE TO END_4 II DOTS -----------------------------
 
-<div align="center">
-    <h2>• old, UNSUPPORTED stuff •</h2>
-    <h3></h3>
-</div>
+> dots/.config/hypr/hyprland/general.conf
 
-- Source for illogical-impulse AGS available in the `ii-ags` branch, others in the `archive` branch.
-- The list goes from newest to the oldest, and the code quality is worse the older a style is
-- No bug fix or official support will be provided.
+monitors, keyboard layout, borders... (basic)
 
-### illogical-impulse<sup>AGS</sup>
+> dots/.config/quickshell/ii/modules/ii/bar/ActiveWindow.qml
 
-Widget system: AGS | Support: No
+> dots/.config/quickshell/ii/modules/ii/bar/BarContent.qml
 
-| AI | Common widgets |
-|:---|:---------------|
-| ![image](https://github.com/user-attachments/assets/9d7af13f-89ef-470d-ba78-d2288b79cf60) | ![image](https://github.com/end-4/dots-hyprland/assets/97237370/406b72b6-fa38-4f0d-a6c4-4d7d5d5ddcb7) |
-| Window management | Weeb power |
-| ![image](https://github.com/user-attachments/assets/02983b9b-79ba-4c25-8717-90bef2357ae5) | ![image](https://github.com/user-attachments/assets/bbb332ec-962a-4e88-a95b-486d0bd8ce76) |
+> dots/.config/quickshell/ii/modules/settings/GeneralConfig.qml
 
-#### m3ww
+> dots/.config/quickshell/ii/modules/common/Config.
 
-   Widget system: EWW | Support: No, dead
+> dots/.config/quickshell/ii/modules/settings/InterfaceConfig.qml
 
-   <a href="https://streamable.com/85ch8x">
-    <img src="https://github.com/end-4/dots-hyprland/assets/97237370/09533e64-b6d7-47eb-a840-ee90c6776adf" alt="Material Eww!">
-   </a>
+> dots/.config/quickshell/ii/modules/settings/QuickConfig.qml
 
-#### NovelKnock
+Disabling IA, weeb and leftsidebar related things and multi monitor setup
 
-   Widget system: EWW | Support: No
+(commented, if you want just uncomment)
 
-   <a href="https://streamable.com/7vo61k">
-    <img src="https://github.com/end-4/dots-hyprland/assets/97237370/42903d03-bf6f-49d4-be7f-dd77e6cb389d" alt="Desktop Preview">
-   </a>
+also added GUI controls for wallpaper rotation and other things
 
-#### Hybrid
+> dots/.config/quickshell/ii/modules/Appearance.qml
 
-   Widget system: EWW | Support: No
-   
-   <a href="https://streamable.com/4oogot">
-    <img src="https://github.com/end-4/dots-hyprland/assets/97237370/190deb1e-f6f5-46ce-8cf0-9b39944c079d" alt="click the circles!">
-   </a>
+something (maybe important)
 
-#### Windoes
+> dots/.config/quickshell/ii/modules/Config.qml
 
-   Widget system: EWW | Support: No
-   
-   <a href="https://streamable.com/5qx614">
-    <img src="https://github.com/end-4/dots-hyprland/assets/97237370/b15317b1-f295-49f5-b90c-fb6328b8d886" alt="Desktop Preview">
-   </a>
+important...
 
+> dots/.config/quickshell/ii/modules/ii/lock/Lock.qml
+
+> dots/.config/quickshell/ii/modules/ii/lock/LockContext.qml
+
+> dots/.config/quickshell/ii/modules/ii/lock/LockSurface.qml
+
+> dots/.config/quickshell/ii/modules/ii/lock/noise.png
+
+my lock screen (man...)
+
+> dots/.config/hypr/hyprland/execs.conf
+
+changed cursor
+
+> dots/.config/hypr/custom/rules.conf
+
+> dots/.config/hypr/hyprland/rules.conf
+
+added rules for themming and some apps
+
+> dots/.config/hypr/hyprland/keybinds.conf
+
+ergonomic and intuitive submap keybidns (one of the best things I made in life)
+
+> dots/.config/hypr/workspaces.conf
+
+> dots/.config/quickshell/ii/modules/settings/BarConfig.qml
+
+for two screens
+
+for the number map of workspaces showing on topbar
+
+> dots/.config/fish/config.fish
+
+added aliases for most used commands
+
+> dots/.config/hypr/custom/execs.conf
+
+> dots/.config/hypr/hyprland/execs.conf
+
+vlc launch in scratchpad on start
+
+> dots/.config/quickshell/ii/modules/ii/cheatsheet/Cheatsheet.qml
+
+> dots/.config/quickshell/ii/modules/ii/cheatsheet/katakana.js
+
+> dots/.config/quickshell/ii/modules/ii/cheatsheet/CheatsheetKatakana.qml
+
+> dots/.config/quickshell/ii/modules/settings/InterfaceConfig.qml
+
+adding katakana
+
+> dots/.config/quickshell/ii/modules/common/functions/Session.qml
+
+better shutdown, wait for the apps to close (not sure it works)
+
+WANT TO DO ------------------------------------------------
+
+- Custom light theme (independent of dark)
+- overview custom numbers
+- popup for keybind submap change
+- what comes to mind
+</details>
