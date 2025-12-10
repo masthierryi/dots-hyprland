@@ -612,64 +612,62 @@ Singleton {
                     property real kittyBackgroundOpacity: 0.8
                 }
             }
-                            property JsonObject border: JsonObject {
-                                property string colActiveBorder: "rgba(0DB7D4FF)"
-                                property string colInactiveBorder: "rgba(31313600)"
-                            }
-                        }
-                        property JsonObject decoration: JsonObject {
-                            property int rounding: 4
-                            property JsonObject blur: JsonObject {
-                                property int passes: 0
-                                property real vibrancy: 0.5
-                            }
-                        }
-                        property JsonObject windowRules: JsonObject {
-                            property JsonObject dolphin: JsonObject {
-                                property real opacity: 0.89
-                                property real opacityInactive: 0.8
-                            }
-                            property JsonObject kate: JsonObject {
-                                property real opacity: 0.89
-                                property real opacityInactive: 0.8
-                            }
-                        }
-                        property JsonObject terminal: JsonObject {
-                            property real kittyBackgroundOpacity: 0.8
-                        }
+                    property JsonObject border: JsonObject {
+                        property string colActiveBorder: "rgba(0DB7D4FF)"
+                        property string colInactiveBorder: "rgba(31313600)"
                     }
-                    property JsonObject dark: JsonObject {
-                        property JsonObject general: JsonObject {
-                            property JsonObject gaps: JsonObject {
-                                property int gapsIn: 3
-                                property int gapsOut: 4
-                            }
-                            property JsonObject border: JsonObject {
-                                property string colActiveBorder: "rgba(0DB7D4FF)"
-                                property string colInactiveBorder: "rgba(31313600)"
-                            }
-                        }
-                        property JsonObject decoration: JsonObject {
-                            property int rounding: 4
-                            property JsonObject blur: JsonObject {
-                                property int passes: 0
-                                property real vibrancy: 0.5
-                            }
-                        }
-                        property JsonObject windowRules: JsonObject {
-                            property JsonObject dolphin: JsonObject {
-                                property real opacity: 0.89
-                                property real opacityInactive: 0.8
-                            }
-                            property JsonObject kate: JsonObject {
-                                property real opacity: 0.89
-                                property real opacityInactive: 0.8
-                            }
-                        }
-                        property JsonObject terminal: JsonObject {
-                            property real kittyBackgroundOpacity: 0.8
-                        }
+
+                property JsonObject decoration: JsonObject {
+                    property int rounding: 4
+                    property JsonObject blur: JsonObject {
+                        property int passes: 0
+                        property real vibrancy: 0.5
                     }
+                }
+                property JsonObject windowRules: JsonObject {
+                    property JsonObject dolphin: JsonObject {
+                        property real opacity: 0.89
+                        property real opacityInactive: 0.8
+                    }
+                    property JsonObject kate: JsonObject {
+                        property real opacity: 0.89
+                        property real opacityInactive: 0.8
+                    }
+                }
+                property JsonObject terminal: JsonObject {
+                    property real kittyBackgroundOpacity: 0.8
+                }
+
+            property JsonObject dark: JsonObject {
+                property JsonObject general: JsonObject {
+                    property JsonObject gaps: JsonObject {
+                        property int gapsIn: 3
+                        property int gapsOut: 4
+                    }
+                    property JsonObject border: JsonObject {
+                        property string colActiveBorder: "rgba(0DB7D4FF)"
+                        property string colInactiveBorder: "rgba(31313600)"
+                    }
+                }
+                property JsonObject decoration: JsonObject {
+                    property int rounding: 4
+                    property JsonObject blur: JsonObject {
+                        property int passes: 0
+                        property real vibrancy: 0.5
+                    }
+                }
+                property JsonObject windowRules: JsonObject {
+                    property JsonObject dolphin: JsonObject {
+                        property real opacity: 0.89
+                        property real opacityInactive: 0.8
+                    }
+                    property JsonObject kate: JsonObject {
+                        property real opacity: 0.89
+                        property real opacityInactive: 0.8
+                    }
+                }
+                property JsonObject terminal: JsonObject {
+                    property real kittyBackgroundOpacity: 0.8
                 }
             }
 
