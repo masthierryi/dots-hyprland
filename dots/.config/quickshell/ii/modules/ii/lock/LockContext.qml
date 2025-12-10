@@ -21,7 +21,6 @@ Scope {
     property bool showFailure: false
     property bool fingerprintsConfigured: false
     property var targetAction: LockContext.ActionEnum.Unlock
-    property bool alsoInhibitIdle: false
 
     function resetTargetAction() {
         root.targetAction = LockContext.ActionEnum.Unlock;
@@ -59,8 +58,7 @@ Scope {
         passwordClearTimer.restart();
     }
 
-    function tryUnlock(alsoInhibitIdle = false) {
-        root.alsoInhibitIdle = alsoInhibitIdle;
+    function tryUnlock() {
         root.unlockInProgress = true;
         pam.start();
     }

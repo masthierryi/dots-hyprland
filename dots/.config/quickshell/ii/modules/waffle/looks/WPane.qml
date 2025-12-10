@@ -10,14 +10,13 @@ import qs.modules.waffle.looks
 
 Item {
     id: root
-    property Item contentItem
+    required property Item contentItem
     property real radius: Looks.radius.large
     property alias border: borderRect
     property alias borderColor: borderRect.border.color
-    property alias borderWidth: borderRect.border.width
 
-    implicitWidth: borderRect.implicitWidth
-    implicitHeight: borderRect.implicitHeight
+    implicitWidth: contentItem.implicitWidth
+    implicitHeight: contentItem.implicitHeight
 
     WRectangularShadow {
         target: borderRect

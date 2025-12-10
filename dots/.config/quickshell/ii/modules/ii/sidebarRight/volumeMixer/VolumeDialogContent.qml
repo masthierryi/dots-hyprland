@@ -30,12 +30,6 @@ ColumnLayout {
             required property var modelData
             node: modelData
         }
-        PagePlaceholder {
-            icon: "widgets"
-            title: Translation.tr("No applications")
-            shown: !root.hasApps
-            shape: MaterialShape.Shape.Cookie7Sided
-        }
     }
 
     StyledComboBox {

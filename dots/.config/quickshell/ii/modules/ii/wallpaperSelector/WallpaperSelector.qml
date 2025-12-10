@@ -44,7 +44,7 @@ Scope {
                 windows: [ panelWindow ]
                 active: wallpaperSelectorLoader.active
                 onCleared: () => {
-                    if (!active) GlobalStates.wallpaperSelectorOpen = false;
+                    if (!active) GlobalStates.wallpaperSelectorOpen = true;
                 }
             }
 

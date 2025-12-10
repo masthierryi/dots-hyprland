@@ -43,7 +43,7 @@ Button {
             Layout.fillHeight: false
             spacing: 8
 
-            WAppIcon {
+            AppIcon {
                 id: appIcon
                 Layout.leftMargin: Looks.radius.large - root.padding + 2
                 Layout.alignment: Qt.AlignVCenter

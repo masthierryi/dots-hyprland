@@ -10,7 +10,7 @@ Item {
     id: root
     readonly property var keybinds: HyprlandKeybinds.keybinds
     property real spacing: 20
-    property real titleSpacing: 7
+    property real titleSpacing: 20
     property real padding: 4
     implicitWidth: row.implicitWidth + padding * 2
     implicitHeight: row.implicitHeight + padding * 2
@@ -119,6 +119,7 @@ Item {
                                 columns: 2
                                 columnSpacing: 4
                                 rowSpacing: 4
+                                x: 4
 
                                 Repeater {
                                     model: {

@@ -19,7 +19,7 @@ Item {
         Network.rescanWifi();
     }
 
-    WPanelPageColumn {
+    PageColumn {
         anchors.fill: parent
 
         BodyRectangle {
@@ -86,7 +86,7 @@ Item {
             }
         }
 
-        WPanelSeparator {}
+        Separator {}
 
         FooterRectangle {
             FooterMoreButton {
