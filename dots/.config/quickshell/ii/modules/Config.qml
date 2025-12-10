@@ -560,11 +560,11 @@ Singleton {
                 property int adviseUpdateThreshold: 75 // packages
                 property int stronglyAdviseUpdateThreshold: 200 // packages
             }
-            
+
             property JsonObject wallpaperSelector: JsonObject {
                 property bool useSystemFileDialog: false
             }
-            
+
             property JsonObject windows: JsonObject {
                 property bool showTitlebar: true // Client-side decoration for shell apps
                 property bool centerTitle: true
@@ -612,31 +612,31 @@ Singleton {
                     property real kittyBackgroundOpacity: 0.8
                 }
             }
-                    property JsonObject border: JsonObject {
-                        property string colActiveBorder: "rgba(0DB7D4FF)"
-                        property string colInactiveBorder: "rgba(31313600)"
-                    }
+            property JsonObject border: JsonObject {
+                property string colActiveBorder: "rgba(0DB7D4FF)"
+                property string colInactiveBorder: "rgba(31313600)"
+            }
 
-                property JsonObject decoration: JsonObject {
-                    property int rounding: 4
-                    property JsonObject blur: JsonObject {
-                        property int passes: 0
-                        property real vibrancy: 0.5
-                    }
+            property JsonObject decoration: JsonObject {
+                property int rounding: 4
+                property JsonObject blur: JsonObject {
+                    property int passes: 0
+                    property real vibrancy: 0.5
                 }
-                property JsonObject windowRules: JsonObject {
-                    property JsonObject dolphin: JsonObject {
-                        property real opacity: 0.89
-                        property real opacityInactive: 0.8
-                    }
-                    property JsonObject kate: JsonObject {
-                        property real opacity: 0.89
-                        property real opacityInactive: 0.8
-                    }
+            }
+            property JsonObject windowRules: JsonObject {
+                property JsonObject dolphin: JsonObject {
+                    property real opacity: 0.89
+                    property real opacityInactive: 0.8
                 }
-                property JsonObject terminal: JsonObject {
-                    property real kittyBackgroundOpacity: 0.8
+                property JsonObject kate: JsonObject {
+                    property real opacity: 0.89
+                    property real opacityInactive: 0.8
                 }
+            }
+            property JsonObject terminal: JsonObject {
+                property real kittyBackgroundOpacity: 0.8
+            }
 
             property JsonObject dark: JsonObject {
                 property JsonObject general: JsonObject {
@@ -689,7 +689,7 @@ Singleton {
 
             property JsonObject waffles: JsonObject {
                 // Animations on Windoes are kinda janky. Setting the following to
-                // false will make (some) stuff also be like that for accuracy. 
+                // false will make (some) stuff also be like that for accuracy.
                 // Example: the right-click menu of the Start button
                 property JsonObject tweaks: JsonObject {
                     property bool smootherMenuAnimations: true
