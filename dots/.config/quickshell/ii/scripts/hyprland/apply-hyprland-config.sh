@@ -2,7 +2,15 @@
 # Script to apply Hyprland configuration from illogical-impulse config.json
 
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
-SHELL_CONFIG_FILE="$XDG_CONFIG_HOME/illogical-impulse/config.json"
+get_config_file() {
+    local current_mode=$(gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null | tr -d "'")
+    if [[ "$current_mode" == "prefer-dark" ]]; then
+        echo "$XDG_CONFIG_HOME/illogical-impulse/config.json"
+    else
+        echo "$XDG_CONFIG_HOME/illogical-impulse/config-light.json"
+    fi
+}
+SHELL_CONFIG_FILE="$(get_config_file)"
 HYPR_CONFIG_DIR="$XDG_CONFIG_HOME/hypr"
 HYPRLAND_GENERAL_CONF="$HYPR_CONFIG_DIR/hyprland/general.conf"
 CUSTOM_RULES_CONF="$HYPR_CONFIG_DIR/custom/rules.conf"
