@@ -1,403 +1,374 @@
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Controls
-import qs
+import Quickshell
+import qs.services
 import qs.modules.common
 import qs.modules.common.widgets
-import qs.modules.common.functions
 
-ScrollView {
-    id: root
-    contentWidth: width
-    clip: true
+ContentPage {
+    forceWidth: true
 
-    ColumnLayout {
-        anchors {
-            left: parent.left
-            right: parent.right
-            top: parent.top
-            margins: 20
-        }
-        spacing: 10
+    ContentSection {
+        icon: "window"
+        title: Translation.tr("General Settings")
 
-        StyledText {
-            text: Translation.tr("Hyprland Settings")
-            Layout.fillWidth: true
-            color: Appearance.colors.colOnLayer0
-            font {
-                family: Appearance.font.family.title
-                pixelSize: Appearance.font.pixelSize.title * 1.3
-                variableAxes: Appearance.font.variableAxes.title
-            }
-        }
-
-        StyledText {
-            text: Translation.tr("Configure Hyprland window manager settings. Changes will be applied based on the current theme mode (light/dark).")
-            Layout.fillWidth: true
-            color: Appearance.colors.colSecondary
-            wrapMode: Text.Wrap
-            font.pixelSize: Appearance.font.pixelSize.smaller
-        }
-
-        SettingsSectionSeparator {
-            text: Translation.tr("General Settings")
-        }
-
-        // Gaps Settings
-        SettingsBox {
-            Layout.fillWidth: true
+        ConfigRow {
             ConfigSpinBox {
-                bindTarget: "hyprland.general.gaps.gapsIn"
-                label: Translation.tr("Inner Gaps")
-                sublabel: Translation.tr("Spacing between windows")
-                minValue: 0
-                maxValue: 50
-            }
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigSpinBox {
-                bindTarget: "hyprland.general.gaps.gapsOut"
-                label: Translation.tr("Outer Gaps")
-                sublabel: Translation.tr("Spacing from screen edges")
-                minValue: 0
-                maxValue: 50
-            }
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigSpinBox {
-                bindTarget: "hyprland.general.gaps.gapsWorkspaces"
-                label: Translation.tr("Workspace Gaps")
-                sublabel: Translation.tr("Spacing between workspaces")
-                minValue: 0
-                maxValue: 100
-            }
-        }
-
-        // Border Settings
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigSpinBox {
-                bindTarget: "hyprland.general.border.borderSize"
-                label: Translation.tr("Border Size")
-                sublabel: Translation.tr("Window border thickness")
-                minValue: 0
-                maxValue: 10
-            }
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigTextField {
-                bindTarget: "hyprland.general.border.colActiveBorder"
-                label: Translation.tr("Active Border Color")
-                sublabel: Translation.tr("Color for active window border (e.g., rgba(0DB7D4FF))")
-            }
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigTextField {
-                bindTarget: "hyprland.general.border.colInactiveBorder"
-                label: Translation.tr("Inactive Border Color")
-                sublabel: Translation.tr("Color for inactive window border")
-            }
-        }
-
-        SettingsSectionSeparator {
-            text: Translation.tr("Decoration Settings")
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigSpinBox {
-                bindTarget: "hyprland.decoration.rounding"
-                label: Translation.tr("Corner Rounding")
-                sublabel: Translation.tr("Window corner radius")
-                minValue: 0
-                maxValue: 20
-            }
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigSwitch {
-                bindTarget: "hyprland.decoration.blur.enabled"
-                label: Translation.tr("Enable Blur")
-                sublabel: Translation.tr("Enable window blur effects")
-            }
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigSpinBox {
-                bindTarget: "hyprland.decoration.blur.size"
-                label: Translation.tr("Blur Size")
-                sublabel: Translation.tr("Blur radius")
-                minValue: 1
-                maxValue: 20
-            }
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigSpinBox {
-                bindTarget: "hyprland.decoration.blur.passes"
-                label: Translation.tr("Blur Passes")
-                sublabel: Translation.tr("Number of blur passes")
-                minValue: 0
-                maxValue: 10
-            }
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigSlider {
-                bindTarget: "hyprland.decoration.blur.vibrancy"
-                label: Translation.tr("Blur Vibrancy")
-                sublabel: Translation.tr("Vibrancy strength")
-                minValue: 0.0
-                maxValue: 1.0
-                stepSize: 0.05
-            }
-        }
-
-        SettingsSectionSeparator {
-            text: Translation.tr("Window Opacity Rules")
-        }
-
-        StyledText {
-            text: Translation.tr("Dolphin File Manager")
-            Layout.fillWidth: true
-            color: Appearance.colors.colOnLayer0
-            font.pixelSize: Appearance.font.pixelSize.larger
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigSwitch {
-                bindTarget: "hyprland.windowRules.dolphin.enabled"
-                label: Translation.tr("Enable Opacity Rule")
-                sublabel: Translation.tr("Apply custom opacity to Dolphin")
-            }
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigSlider {
-                bindTarget: "hyprland.windowRules.dolphin.opacity"
-                label: Translation.tr("Active Opacity")
-                sublabel: Translation.tr("Opacity when window is focused")
-                minValue: 0.1
-                maxValue: 1.0
-                stepSize: 0.01
-            }
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigSlider {
-                bindTarget: "hyprland.windowRules.dolphin.opacityInactive"
-                label: Translation.tr("Inactive Opacity")
-                sublabel: Translation.tr("Opacity when window is not focused")
-                minValue: 0.1
-                maxValue: 1.0
-                stepSize: 0.01
-            }
-        }
-
-        StyledText {
-            text: Translation.tr("Kate Text Editor")
-            Layout.fillWidth: true
-            color: Appearance.colors.colOnLayer0
-            font.pixelSize: Appearance.font.pixelSize.larger
-            Layout.topMargin: 10
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigSwitch {
-                bindTarget: "hyprland.windowRules.kate.enabled"
-                label: Translation.tr("Enable Opacity Rule")
-                sublabel: Translation.tr("Apply custom opacity to Kate")
-            }
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigSlider {
-                bindTarget: "hyprland.windowRules.kate.opacity"
-                label: Translation.tr("Active Opacity")
-                sublabel: Translation.tr("Opacity when window is focused")
-                minValue: 0.1
-                maxValue: 1.0
-                stepSize: 0.01
-            }
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigSlider {
-                bindTarget: "hyprland.windowRules.kate.opacityInactive"
-                label: Translation.tr("Inactive Opacity")
-                sublabel: Translation.tr("Opacity when window is not focused")
-                minValue: 0.1
-                maxValue: 1.0
-                stepSize: 0.01
-            }
-        }
-
-        SettingsSectionSeparator {
-            text: Translation.tr("Terminal Settings")
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigSlider {
-                bindTarget: "hyprland.terminal.kittyBackgroundOpacity"
-                label: Translation.tr("Kitty Background Opacity")
-                sublabel: Translation.tr("Background transparency for Kitty terminal")
-                minValue: 0.1
-                maxValue: 1.0
-                stepSize: 0.01
-            }
-        }
-
-        SettingsSectionSeparator {
-            text: Translation.tr("Theme Mode Settings")
-        }
-
-        StyledText {
-            text: Translation.tr("Light Mode Overrides")
-            Layout.fillWidth: true
-            color: Appearance.colors.colOnLayer0
-            font.pixelSize: Appearance.font.pixelSize.larger
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigSlider {
-                bindTarget: "hyprland.themeModes.light.windowRules.dolphin.opacity"
-                label: Translation.tr("Dolphin Opacity (Light)")
-                sublabel: Translation.tr("Opacity for Dolphin in light mode")
-                minValue: 0.1
-                maxValue: 1.0
-                stepSize: 0.01
-            }
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigSlider {
-                bindTarget: "hyprland.themeModes.light.windowRules.kate.opacity"
-                label: Translation.tr("Kate Opacity (Light)")
-                sublabel: Translation.tr("Opacity for Kate in light mode")
-                minValue: 0.1
-                maxValue: 1.0
-                stepSize: 0.01
-            }
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigSlider {
-                bindTarget: "hyprland.themeModes.light.terminal.kittyBackgroundOpacity"
-                label: Translation.tr("Kitty Opacity (Light)")
-                sublabel: Translation.tr("Kitty background opacity in light mode")
-                minValue: 0.1
-                maxValue: 1.0
-                stepSize: 0.01
-            }
-        }
-
-        StyledText {
-            text: Translation.tr("Dark Mode Overrides")
-            Layout.fillWidth: true
-            color: Appearance.colors.colOnLayer0
-            font.pixelSize: Appearance.font.pixelSize.larger
-            Layout.topMargin: 10
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigSlider {
-                bindTarget: "hyprland.themeModes.dark.windowRules.dolphin.opacity"
-                label: Translation.tr("Dolphin Opacity (Dark)")
-                sublabel: Translation.tr("Opacity for Dolphin in dark mode")
-                minValue: 0.1
-                maxValue: 1.0
-                stepSize: 0.01
-            }
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigSlider {
-                bindTarget: "hyprland.themeModes.dark.windowRules.kate.opacity"
-                label: Translation.tr("Kate Opacity (Dark)")
-                sublabel: Translation.tr("Opacity for Kate in dark mode")
-                minValue: 0.1
-                maxValue: 1.0
-                stepSize: 0.01
-            }
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            ConfigSlider {
-                bindTarget: "hyprland.themeModes.dark.terminal.kittyBackgroundOpacity"
-                label: Translation.tr("Kitty Opacity (Dark)")
-                sublabel: Translation.tr("Kitty background opacity in dark mode")
-                minValue: 0.1
-                maxValue: 1.0
-                stepSize: 0.01
-            }
-        }
-
-        SettingsSectionSeparator {
-            text: Translation.tr("Apply Settings")
-        }
-
-        SettingsBox {
-            Layout.fillWidth: true
-            RowLayout {
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                    verticalCenter: parent.verticalCenter
+                icon: "spaces"
+                text: Translation.tr("Inner Gaps")
+                value: Config.options.hyprland.general.gaps.gapsIn
+                from: 0
+                to: 50
+                stepSize: 1
+                onValueChanged: {
+                    Config.options.hyprland.general.gaps.gapsIn = value;
                 }
-                spacing: 10
-
-                StyledText {
-                    Layout.fillWidth: true
-                    text: Translation.tr("Apply Current Settings")
-                    color: Appearance.colors.colOnLayer0
-                    font.pixelSize: Appearance.font.pixelSize.larger
+            }
+            ConfigSpinBox {
+                icon: "expand_content"
+                text: Translation.tr("Outer Gaps")
+                value: Config.options.hyprland.general.gaps.gapsOut
+                from: 0
+                to: 50
+                stepSize: 1
+                onValueChanged: {
+                    Config.options.hyprland.general.gaps.gapsOut = value;
                 }
+            }
+        }
 
-                Button {
-                    text: Translation.tr("Apply Now")
-                    onClicked: {
-                        Quickshell.execDetached([Directories.scriptPath + "/hyprland/apply-hyprland-config.sh"]);
+        ConfigRow {
+            ConfigSpinBox {
+                icon: "grid_view"
+                text: Translation.tr("Workspace Gaps")
+                value: Config.options.hyprland.general.gaps.gapsWorkspaces
+                from: 0
+                to: 100
+                stepSize: 5
+                onValueChanged: {
+                    Config.options.hyprland.general.gaps.gapsWorkspaces = value;
+                }
+            }
+            ConfigSpinBox {
+                icon: "border_outer"
+                text: Translation.tr("Border Size")
+                value: Config.options.hyprland.general.border.borderSize
+                from: 0
+                to: 10
+                stepSize: 1
+                onValueChanged: {
+                    Config.options.hyprland.general.border.borderSize = value;
+                }
+            }
+        }
+
+        ContentSubsection {
+            title: Translation.tr("Border Colors")
+            
+            StyledText {
+                text: Translation.tr("Active: ") + Config.options.hyprland.general.border.colActiveBorder
+                color: Appearance.colors.colSecondary
+                font.pixelSize: Appearance.font.pixelSize.smaller
+                Layout.leftMargin: 48
+            }
+            StyledText {
+                text: Translation.tr("Inactive: ") + Config.options.hyprland.general.border.colInactiveBorder
+                color: Appearance.colors.colSecondary
+                font.pixelSize: Appearance.font.pixelSize.smaller
+                Layout.leftMargin: 48
+            }
+            StyledText {
+                text: Translation.tr("Edit in config file for custom colors")
+                color: Appearance.colors.colSecondary
+                font.pixelSize: Appearance.font.pixelSize.smaller
+                wrapMode: Text.Wrap
+                Layout.leftMargin: 48
+            }
+        }
+    }
+
+    ContentSection {
+        icon: "texture"
+        title: Translation.tr("Decoration")
+
+        ConfigSpinBox {
+            icon: "rounded_corner"
+            text: Translation.tr("Corner Rounding")
+            value: Config.options.hyprland.decoration.rounding
+            from: 0
+            to: 20
+            stepSize: 1
+            onValueChanged: {
+                Config.options.hyprland.decoration.rounding = value;
+            }
+        }
+
+        ConfigSwitch {
+            buttonIcon: "blur_on"
+            text: Translation.tr("Enable Blur")
+            checked: Config.options.hyprland.decoration.blur.enabled
+            onCheckedChanged: {
+                Config.options.hyprland.decoration.blur.enabled = checked;
+            }
+        }
+
+        ConfigRow {
+            enabled: Config.options.hyprland.decoration.blur.enabled
+            ConfigSpinBox {
+                icon: "blur_medium"
+                text: Translation.tr("Blur Size")
+                value: Config.options.hyprland.decoration.blur.size
+                from: 1
+                to: 20
+                stepSize: 1
+                onValueChanged: {
+                    Config.options.hyprland.decoration.blur.size = value;
+                }
+            }
+            ConfigSpinBox {
+                icon: "layers"
+                text: Translation.tr("Blur Passes")
+                value: Config.options.hyprland.decoration.blur.passes
+                from: 0
+                to: 10
+                stepSize: 1
+                onValueChanged: {
+                    Config.options.hyprland.decoration.blur.passes = value;
+                }
+            }
+        }
+
+        ConfigSpinBox {
+            enabled: Config.options.hyprland.decoration.blur.enabled
+            icon: "palette"
+            text: Translation.tr("Blur Vibrancy (%)")
+            value: Config.options.hyprland.decoration.blur.vibrancy * 100
+            from: 0
+            to: 100
+            stepSize: 5
+            onValueChanged: {
+                Config.options.hyprland.decoration.blur.vibrancy = value / 100;
+            }
+        }
+    }
+
+    ContentSection {
+        icon: "opacity"
+        title: Translation.tr("Window Opacity Rules")
+
+        ContentSubsection {
+            title: Translation.tr("Dolphin File Manager")
+
+            ConfigSwitch {
+                buttonIcon: "folder"
+                text: Translation.tr("Enable Opacity Rule")
+                checked: Config.options.hyprland.windowRules.dolphin.enabled
+                onCheckedChanged: {
+                    Config.options.hyprland.windowRules.dolphin.enabled = checked;
+                }
+            }
+
+            ConfigRow {
+                enabled: Config.options.hyprland.windowRules.dolphin.enabled
+                ConfigSpinBox {
+                    icon: "visibility"
+                    text: Translation.tr("Active Opacity (%)")
+                    value: Config.options.hyprland.windowRules.dolphin.opacity * 100
+                    from: 10
+                    to: 100
+                    stepSize: 1
+                    onValueChanged: {
+                        Config.options.hyprland.windowRules.dolphin.opacity = value / 100;
+                    }
+                }
+                ConfigSpinBox {
+                    icon: "visibility_off"
+                    text: Translation.tr("Inactive Opacity (%)")
+                    value: Config.options.hyprland.windowRules.dolphin.opacityInactive * 100
+                    from: 10
+                    to: 100
+                    stepSize: 1
+                    onValueChanged: {
+                        Config.options.hyprland.windowRules.dolphin.opacityInactive = value / 100;
                     }
                 }
             }
         }
 
+        ContentSubsection {
+            title: Translation.tr("Kate Text Editor")
+
+            ConfigSwitch {
+                buttonIcon: "edit"
+                text: Translation.tr("Enable Opacity Rule")
+                checked: Config.options.hyprland.windowRules.kate.enabled
+                onCheckedChanged: {
+                    Config.options.hyprland.windowRules.kate.enabled = checked;
+                }
+            }
+
+            ConfigRow {
+                enabled: Config.options.hyprland.windowRules.kate.enabled
+                ConfigSpinBox {
+                    icon: "visibility"
+                    text: Translation.tr("Active Opacity (%)")
+                    value: Config.options.hyprland.windowRules.kate.opacity * 100
+                    from: 10
+                    to: 100
+                    stepSize: 1
+                    onValueChanged: {
+                        Config.options.hyprland.windowRules.kate.opacity = value / 100;
+                    }
+                }
+                ConfigSpinBox {
+                    icon: "visibility_off"
+                    text: Translation.tr("Inactive Opacity (%)")
+                    value: Config.options.hyprland.windowRules.kate.opacityInactive * 100
+                    from: 10
+                    to: 100
+                    stepSize: 1
+                    onValueChanged: {
+                        Config.options.hyprland.windowRules.kate.opacityInactive = value / 100;
+                    }
+                }
+            }
+        }
+    }
+
+    ContentSection {
+        icon: "terminal"
+        title: Translation.tr("Terminal Settings")
+
+        ConfigSpinBox {
+            icon: "contrast"
+            text: Translation.tr("Kitty Background Opacity (%)")
+            value: Config.options.hyprland.terminal.kittyBackgroundOpacity * 100
+            from: 10
+            to: 100
+            stepSize: 1
+            onValueChanged: {
+                Config.options.hyprland.terminal.kittyBackgroundOpacity = value / 100;
+            }
+        }
+    }
+
+    ContentSection {
+        icon: "light_mode"
+        title: Translation.tr("Light Mode Overrides")
+
+        ContentSubsection {
+            title: Translation.tr("Window Opacity (Light Mode)")
+
+            ConfigRow {
+                ConfigSpinBox {
+                    icon: "folder"
+                    text: Translation.tr("Dolphin (%)")
+                    value: Config.options.hyprland.themeModes.light.windowRules.dolphin.opacity * 100
+                    from: 10
+                    to: 100
+                    stepSize: 1
+                    onValueChanged: {
+                        Config.options.hyprland.themeModes.light.windowRules.dolphin.opacity = value / 100;
+                    }
+                }
+                ConfigSpinBox {
+                    icon: "edit"
+                    text: Translation.tr("Kate (%)")
+                    value: Config.options.hyprland.themeModes.light.windowRules.kate.opacity * 100
+                    from: 10
+                    to: 100
+                    stepSize: 1
+                    onValueChanged: {
+                        Config.options.hyprland.themeModes.light.windowRules.kate.opacity = value / 100;
+                    }
+                }
+            }
+
+            ConfigSpinBox {
+                icon: "terminal"
+                text: Translation.tr("Kitty Background (%)")
+                value: Config.options.hyprland.themeModes.light.terminal.kittyBackgroundOpacity * 100
+                from: 10
+                to: 100
+                stepSize: 1
+                onValueChanged: {
+                    Config.options.hyprland.themeModes.light.terminal.kittyBackgroundOpacity = value / 100;
+                }
+            }
+        }
+    }
+
+    ContentSection {
+        icon: "dark_mode"
+        title: Translation.tr("Dark Mode Overrides")
+
+        ContentSubsection {
+            title: Translation.tr("Window Opacity (Dark Mode)")
+
+            ConfigRow {
+                ConfigSpinBox {
+                    icon: "folder"
+                    text: Translation.tr("Dolphin (%)")
+                    value: Config.options.hyprland.themeModes.dark.windowRules.dolphin.opacity * 100
+                    from: 10
+                    to: 100
+                    stepSize: 1
+                    onValueChanged: {
+                        Config.options.hyprland.themeModes.dark.windowRules.dolphin.opacity = value / 100;
+                    }
+                }
+                ConfigSpinBox {
+                    icon: "edit"
+                    text: Translation.tr("Kate (%)")
+                    value: Config.options.hyprland.themeModes.dark.windowRules.kate.opacity * 100
+                    from: 10
+                    to: 100
+                    stepSize: 1
+                    onValueChanged: {
+                        Config.options.hyprland.themeModes.dark.windowRules.kate.opacity = value / 100;
+                    }
+                }
+            }
+
+            ConfigSpinBox {
+                icon: "terminal"
+                text: Translation.tr("Kitty Background (%)")
+                value: Config.options.hyprland.themeModes.dark.terminal.kittyBackgroundOpacity * 100
+                from: 10
+                to: 100
+                stepSize: 1
+                onValueChanged: {
+                    Config.options.hyprland.themeModes.dark.terminal.kittyBackgroundOpacity = value / 100;
+                }
+            }
+        }
+    }
+
+    ContentSection {
+        icon: "settings"
+        title: Translation.tr("Apply Settings")
+
+        ConfigSwitch {
+            buttonIcon: "check"
+            text: Translation.tr("Apply Hyprland Settings Now")
+            checked: false
+            onCheckedChanged: {
+                if (checked) {
+                    Quickshell.execDetached([Directories.scriptPath + "/hyprland/apply-hyprland-config.sh"]);
+                    checked = false;
+                }
+            }
+            StyledToolTip {
+                text: Translation.tr("Apply current settings to Hyprland configuration files")
+            }
+        }
+
         StyledText {
             text: Translation.tr("Note: Settings will be automatically applied when you toggle light/dark mode")
-            Layout.fillWidth: true
             color: Appearance.colors.colSecondary
             wrapMode: Text.Wrap
             font.pixelSize: Appearance.font.pixelSize.smaller
-            Layout.topMargin: 5
-        }
-
-        Item {
-            Layout.fillHeight: true
+            Layout.leftMargin: 48
         }
     }
 }
