@@ -7,16 +7,14 @@ import qs.services
 import qs.modules.common
 import qs.modules.waffle.looks
 
-// TODO: Replace the icon with QMLized svg (with /usr/lib/qt6/bin/svgtoqml) for proper micro-animation
 AppButton {
     id: root
 
     leftInset: Config.options.waffles.bar.leftAlignApps ? 12 : 0
     iconName: down ? "start-here-pressed" : "start-here"
 
-    checked: GlobalStates.searchOpen && LauncherSearch.query === ""
     onClicked: {
-        GlobalStates.searchOpen = !GlobalStates.searchOpen;
+        GlobalStates.overviewOpen = !GlobalStates.overviewOpen; // For now...
     }
 
     BarToolTip {

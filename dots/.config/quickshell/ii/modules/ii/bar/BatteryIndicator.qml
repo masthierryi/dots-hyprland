@@ -30,11 +30,7 @@ MouseArea {
             height: batteryProgress.valueBarHeight
 
             RowLayout {
-                anchors {
-                    horizontalCenter: parent.horizontalCenter
-                    bottom: parent.bottom
-                    bottomMargin: (parent.height - height) / 2
-                }
+                anchors.centerIn: parent
                 spacing: 0
 
                 MaterialSymbol {

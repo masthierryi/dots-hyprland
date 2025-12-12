@@ -24,7 +24,7 @@ Item {
         Bluetooth.defaultAdapter.discovering = false;
     }
 
-    WPanelPageColumn {
+    PageColumn {
         anchors.fill: parent
 
         BodyRectangle {
@@ -61,7 +61,7 @@ Item {
             }
         }
 
-        WPanelSeparator {}
+        Separator {}
 
         FooterRectangle {}
     }

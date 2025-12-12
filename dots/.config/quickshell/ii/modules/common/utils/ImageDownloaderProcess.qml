@@ -18,19 +18,14 @@ Process {
 
     running: true
     command: ["bash", "-c", 
-        `mkdir -p $(dirname '${processFilePath()}'); [ -f '${processFilePath()}' ] || curl -sSL '${sourceUrl}' -o '${processFilePath()}' && file '${processFilePath()}'`
+        `mkdir -p $(dirname '${processFilePath(filePath)}'); [ -f '${processFilePath(filePath)}' ] || curl -sSL '${sourceUrl}' -o '${processFilePath(filePath)}' && magick identify -format '%w %h' '${processFilePath(filePath)}'[0]`
     ]
     stdout: StdioCollector {
         id: imageSizeOutputCollector
         onStreamFinished: {
             const output = imageSizeOutputCollector.text.trim();
-            const match = output.match(/(\d+)\s*x\s*(\d+)/);
-
-            if (match) {
-                const width = Number(match[1]);
-                const height = Number(match[2]);
-                root.done(root.filePath, width, height);
-            }
+            const [width, height] = output.split(" ").map(Number);
+            root.done(root.filePath, width, height);
         }
     }
 }

@@ -24,11 +24,11 @@ Scope {
             readonly property HyprlandMonitor monitor: Hyprland.monitorFor(root.screen)
             property bool monitorIsFocused: (Hyprland.focusedMonitor?.id == monitor?.id)
             screen: modelData
-            visible: GlobalStates.overviewOpen
+            visible: GlobalStates.overviewOpen && monitorIsFocused
 
             WlrLayershell.namespace: "quickshell:overview"
             WlrLayershell.layer: WlrLayer.Overlay
-            // WlrLayershell.keyboardFocus: GlobalStates.overviewOpen ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
+            WlrLayershell.keyboardFocus: GlobalStates.overviewOpen ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
             color: "transparent"
 
             mask: Region {
@@ -162,7 +162,7 @@ Scope {
     }
 
     IpcHandler {
-        target: "search"
+        target: "overview"
 
         function toggle() {
             GlobalStates.overviewOpen = !GlobalStates.overviewOpen;
@@ -185,8 +185,8 @@ Scope {
     }
 
     GlobalShortcut {
-        name: "searchToggle"
-        description: "Toggles search on press"
+        name: "overviewToggle"
+        description: "Toggles overview on press"
 
         onPressed: {
             GlobalStates.overviewOpen = !GlobalStates.overviewOpen;
@@ -201,8 +201,16 @@ Scope {
         }
     }
     GlobalShortcut {
-        name: "searchToggleRelease"
-        description: "Toggles search on release"
+        name: "overviewClose"
+        description: "Closes overview"
+
+        onPressed: {
+            GlobalStates.overviewOpen = false;
+        }
+    }
+    GlobalShortcut {
+        name: "overviewToggleRelease"
+        description: "Toggles overview on release"
 
         onPressed: {
             GlobalStates.superReleaseMightTrigger = true;
@@ -210,15 +218,15 @@ Scope {
 
         onReleased: {
             if (!GlobalStates.superReleaseMightTrigger) {
-                GlobalStates.superReleaseMightTrigger = true;
+                GlobalStates.superReleaseMightTrigger = false;
                 return;
             }
             GlobalStates.overviewOpen = !GlobalStates.overviewOpen;
         }
     }
     GlobalShortcut {
-        name: "searchToggleReleaseInterrupt"
-        description: "Interrupts possibility of search being toggled on release. " + "This is necessary because GlobalShortcut.onReleased in quickshell triggers whether or not you press something else while holding the key. " + "To make sure this works consistently, use binditn = MODKEYS, catchall in an automatically triggered submap that includes everything."
+        name: "overviewToggleReleaseInterrupt"
+        description: "Interrupts possibility of overview being toggled on release. " + "This is necessary because GlobalShortcut.onReleased in quickshell triggers whether or not you press something else while holding the key. " + "To make sure this works consistently, use binditn = MODKEYS, catchall in an automatically triggered submap that includes everything."
 
         onPressed: {
             GlobalStates.superReleaseMightTrigger = false;

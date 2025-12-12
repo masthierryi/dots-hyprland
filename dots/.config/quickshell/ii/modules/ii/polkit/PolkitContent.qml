@@ -66,7 +66,12 @@ Item {
         WindowDialogParagraph {
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignLeft
-            text: PolkitService.cleanMessage
+            text: {
+                if (!PolkitService.flow) return;
+                return PolkitService.flow.message.endsWith(".")
+                    ? PolkitService.flow.message.slice(0, -1)
+                    : PolkitService.flow.message
+            }
         }
 
         MaterialTextField {
@@ -74,7 +79,11 @@ Item {
             Layout.fillWidth: true
             focus: true
             enabled: PolkitService.interactionAvailable
-            placeholderText: PolkitService.cleanPrompt
+            placeholderText: {
+                const inputPrompt = PolkitService.flow?.inputPrompt.trim() ?? "";
+                const cleanedInputPrompt = inputPrompt.endsWith(":") ? inputPrompt.slice(0, -1) : inputPrompt;
+                return cleanedInputPrompt || (root.usePasswordChars ? Translation.tr("Password") : Translation.tr("Input"))
+            }
             echoMode: root.usePasswordChars ? TextInput.Password : TextInput.Normal
             onAccepted: root.submit();
 
@@ -86,7 +95,7 @@ Item {
         }
 
         WindowDialogButtonRow {
-            Layout.bottomMargin: 10 // I honestly don't know why this is necessary
+
             Item {
                 Layout.fillWidth: true
             }

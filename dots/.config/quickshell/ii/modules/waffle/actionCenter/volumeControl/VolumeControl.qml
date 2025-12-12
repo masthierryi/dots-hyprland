@@ -14,7 +14,7 @@ Item {
     id: root
     property bool output: true
 
-    WPanelPageColumn {
+    PageColumn {
         anchors.fill: parent
 
         BodyRectangle {
@@ -48,7 +48,7 @@ Item {
             }
         }
 
-        WPanelSeparator {}
+        Separator {}
 
         FooterRectangle {
             WButton {
@@ -103,7 +103,7 @@ Item {
             }
         }
 
-        WPanelSeparator {
+        Separator {
             visible: EasyEffects.available && root.output
             color: Looks.colors.bg2Hover
         }
@@ -129,7 +129,7 @@ Item {
             onClicked: EasyEffects.enable()
         }
 
-        WPanelSeparator {
+        Separator {
             color: Looks.colors.bg2Hover
         }
 

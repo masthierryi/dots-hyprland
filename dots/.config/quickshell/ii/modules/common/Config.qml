@@ -79,13 +79,13 @@ Singleton {
             id: configOptionsJsonAdapter
 
             property list<string> enabledPanels: [
-                "iiBar", "iiBackground", "iiCheatsheet", "iiDock", "iiLock", "iiMediaControls", "iiNotificationPopup", "iiOnScreenDisplay", "iiOnScreenKeyboard", "iiOverlay", "iiOverview", "iiPolkit", "iiRegionSelector", "iiReloadPopup", "iiScreenCorners", "iiSessionScreen", "iiSidebarLeft", "iiSidebarRight", "iiVerticalBar", "iiWallpaperSelector"
-            ]
+                "iiBar", "iiBackground", "iiCheatsheet", "iiDock", "iiLock", "iiMediaControls", "iiNotificationPopup", "iiOnScreenDisplay", "iiOnScreenKeyboard", "iiOverlay", "iiOverview", "iiPolkit", "iiRegionSelector", "iiReloadPopup", "iiScreenCorners", "iiSessionScreen", "iiSidebarRight", "iiVerticalBar", "iiWallpaperSelector"
+            ] //"iiSidebarLeft",
             property string panelFamily: "ii" // "ii", "w"
 
             property JsonObject policies: JsonObject {
-                property int ai: 1 // 0: No | 1: Yes | 2: Local
-                property int weeb: 1 // 0: No | 1: Open | 2: Closet
+                property int ai: 0 // 0: No | 1: Yes | 2: Local
+                property int weeb: 0 // 0: No | 1: Open | 2: Closet
             }
 
             property JsonObject ai: JsonObject {
@@ -137,8 +137,7 @@ Singleton {
                     }
                 }
                 property JsonObject palette: JsonObject {
-                    property string type: "auto" // Allowed: auto, scheme-content, scheme-expressive, scheme-fidelity, scheme-fruit-salad, scheme-monochrome, scheme-neutral, scheme-rainbow, scheme-tonal-spot
-                    property string accentColor: ""
+                    property string type: "scheme-rainbow" // Allowed: auto, scheme-content, scheme-expressive, scheme-fidelity, scheme-fruit-salad, scheme-monochrome, scheme-neutral, scheme-rainbow, scheme-tonal-spot
                 }
             }
 
@@ -154,9 +153,7 @@ Singleton {
 
             property JsonObject apps: JsonObject {
                 property string bluetooth: "kcmshell6 kcm_bluetooth"
-                property string changePassword: "kitty -1 --hold=yes fish -i -c 'passwd'"
-                property string network: "kcmshell6 kcm_networkmanagement"
-                property string manageUser: "kcmshell6 kcm_users"
+                property string network: "kitty -1 fish -c nmtui"
                 property string networkEthernet: "kcmshell6 kcm_networkmanagement"
                 property string taskManager: "plasma-systemmonitor --page-name Processes"
                 property string terminal: "kitty -1" // This is only for shell actions
@@ -167,7 +164,7 @@ Singleton {
             property JsonObject background: JsonObject {
                 property JsonObject widgets: JsonObject {
                     property JsonObject clock: JsonObject {
-                        property bool enable: true
+                        property bool enable: false
                         property bool showOnlyWhenLocked: false
                         property string placementStrategy: "leastBusy" // "free", "leastBusy", "mostBusy"
                         property real x: 100
@@ -214,6 +211,8 @@ Singleton {
                     property bool enableSidebar: true
                     property real widgetsFactor: 1.2
                 }
+                property bool enableSlide: false
+                property int slideInterval: 5
             }
 
             property JsonObject bar: JsonObject {
@@ -237,6 +236,8 @@ Singleton {
                 property JsonObject resources: JsonObject {
                     property bool alwaysShowSwap: true
                     property bool alwaysShowCpu: true
+                    property bool alwaysShowGPU: true
+                    property int gpuLayout : 0 // 0: DGPU | 1: IGPU | 2: Hybrid
                     property int memoryWarningThreshold: 95
                     property int swapWarningThreshold: 85
                     property int cpuWarningThreshold: 90
@@ -285,10 +286,6 @@ Singleton {
                 property int suspend: 3
             }
 
-            property JsonObject calendar: JsonObject {
-                property string locale: "en-GB"
-            }
-
             property JsonObject cheatsheet: JsonObject {
                 // Use a nerdfont to see the icons
                 // 0: 󰖳  | 1: 󰌽 | 2: 󰘳 | 3:  | 4: 󰨡
@@ -303,6 +300,8 @@ Singleton {
                     property int key: Appearance.font.pixelSize.smaller
                     property int comment: Appearance.font.pixelSize.smaller
                 }
+                property bool showKatakana: false
+                property bool showPeriodicTable: false
             }
 
             property JsonObject conflictKiller: JsonObject {
@@ -323,7 +322,7 @@ Singleton {
                 property bool pinnedOnStartup: false
                 property bool hoverToReveal: true // When false, only reveals on empty workspace
                 property list<string> pinnedApps: [ // IDs of pinned entries
-                    "org.kde.dolphin", "kitty",]
+                "org.kde.dolphin", "kitty",]
                 property list<string> ignoredAppRegexes: []
             }
 
@@ -346,10 +345,6 @@ Singleton {
                     property string targetLanguage: "auto" // Run `trans -list-all` for available languages
                     property string sourceLanguage: "auto"
                 }
-            }
-
-            property JsonObject launcher: JsonObject {
-                property list<string> pinnedApps: [ "org.kde.dolphin", "kitty", "cmake-gui"]
             }
 
             property JsonObject light: JsonObject {
@@ -437,9 +432,6 @@ Singleton {
                 property JsonObject circle: JsonObject {
                     property int strokeWidth: 6
                     property int padding: 10
-                }
-                property JsonObject annotation: JsonObject {
-                    property bool useSatty: false
                 }
             }
 
@@ -568,14 +560,57 @@ Singleton {
                 property int adviseUpdateThreshold: 75 // packages
                 property int stronglyAdviseUpdateThreshold: 200 // packages
             }
-            
+
             property JsonObject wallpaperSelector: JsonObject {
                 property bool useSystemFileDialog: false
             }
-            
+
             property JsonObject windows: JsonObject {
                 property bool showTitlebar: true // Client-side decoration for shell apps
                 property bool centerTitle: true
+            }
+
+            property JsonObject hyprland: JsonObject {
+                property JsonObject general: JsonObject {
+                    property JsonObject gaps: JsonObject {
+                        property int gapsIn: 3
+                        property int gapsOut: 4
+                        property int gapsWorkspaces: 50
+                    }
+                    property JsonObject border: JsonObject {
+                        property int borderSize: 2
+                        property string colActiveBorder: "rgba(0DB7D4FF)"
+                        property string colInactiveBorder: "rgba(31313600)"
+                    }
+                    property JsonObject snap: JsonObject {
+                        property bool enabled: true
+                        property int windowGap: 4
+                        property int monitorGap: 5
+                        property bool respectGaps: true
+                    }
+                }
+                property JsonObject decoration: JsonObject {
+                    property int rounding: 4
+                    property JsonObject blur: JsonObject {
+                        property bool enabled: true
+                        property bool xray: true
+                        property int size: 3
+                        property int passes: 0
+                        property real brightness: 1
+                        property real noise: 0.4
+                        property real contrast: 0.9
+                        property real vibrancy: 0.5
+                        property real vibrancyDarkness: 0.1
+                    }
+                }
+                property JsonObject windowRules: JsonObject {
+                    property real opacityActive: 0.89
+                    property real opacityInactive: 0.8
+                    property real opacityHover: 0.95
+                }
+                property JsonObject terminal: JsonObject {
+                    property real kittyBackgroundOpacity: 0.8
+                }
             }
 
             property JsonObject hacks: JsonObject {
@@ -595,13 +630,12 @@ Singleton {
             }
 
             property JsonObject waffles: JsonObject {
-                // Some spots are kinda janky/awkward. Setting the following to
-                // false will make (some) stuff also be like that for accuracy. 
+                // Animations on Windoes are kinda janky. Setting the following to
+                // false will make (some) stuff also be like that for accuracy.
                 // Example: the right-click menu of the Start button
                 property JsonObject tweaks: JsonObject {
-                    property bool switchHandlePositionFix: true
                     property bool smootherMenuAnimations: true
-                    property bool smootherSearchBar: true
+                    property bool switchHandlePositionFix: true
                 }
                 property JsonObject bar: JsonObject {
                     property bool bottom: true
@@ -609,9 +643,6 @@ Singleton {
                 }
                 property JsonObject actionCenter: JsonObject {
                     property list<string> toggles: [ "network", "bluetooth", "easyEffects", "powerProfile", "idleInhibitor", "nightLight", "darkMode", "antiFlashbang", "cloudflareWarp", "mic", "musicRecognition", "notifications", "onScreenKeyboard", "gameMode", "screenSnip", "colorPicker" ]
-                }
-                property JsonObject calendar: JsonObject {
-                    property bool force2CharDayOfWeek: true
                 }
             }
         }

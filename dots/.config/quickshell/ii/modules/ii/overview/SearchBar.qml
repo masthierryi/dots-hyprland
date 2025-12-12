@@ -81,7 +81,7 @@ RowLayout {
             }
         }
 
-        onTextChanged: LauncherSearch.query = text
+        onTextChanged: root.searchingText = text
 
         onAccepted: {
             if (appResults.count > 0) {
