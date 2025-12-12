@@ -30,8 +30,8 @@ StyledFlickable {
             delegate: Item {
                 id: charItem
                 required property int index
-                implicitWidth: 10
-                implicitHeight: 10
+                implicitWidth: 8
+                implicitHeight: 8
                 MaterialShape {
                     id: materialShape
                     anchors.centerIn: parent

@@ -79,6 +79,36 @@ Singleton {
         selectProc.select(filePath, darkMode);
     }
 
+    // // recursive search on wallpaper directory for random wallpaper
+    // Process {
+    //     id: randomRecursiveProc
+    //     property var savedDarkMode
+    //
+    //     stdout: StdioCollector {
+    //         onStreamFinished: {
+    //             const file = text.trim();
+    //
+    //             if (file) {
+    //                 print("[Wallpapers] Random (Recursive) selected:", file);
+    //                 root.select("file://" + file, randomRecursiveProc.savedDarkMode);
+    //             }
+    //         }
+    //     }
+    // }
+    //
+    // function randomFromCurrentFolder(darkMode = Appearance.m3colors.darkmode) {
+    //     const targetDir = root.effectiveDirectory;
+    //
+    //     if (!targetDir) return;
+    //     randomRecursiveProc.savedDarkMode = darkMode;
+    //     const extFilter = root.extensions.map(ext => `-iname "*.${ext}"`).join(" -o ");
+    //     const cmd = `find "${targetDir}" -type f \\( ${extFilter} \\) | shuf -n 1`;
+    //     randomRecursiveProc.command = ["sh", "-c", cmd];
+    //     randomRecursiveProc.running = true;
+    // }
+    // // end of recursive search on ...
+
+    // standard random from current folder
     function randomFromCurrentFolder(darkMode = Appearance.m3colors.darkmode) {
         if (folderModel.count === 0) return;
         const randomIndex = Math.floor(Math.random() * folderModel.count);
@@ -86,6 +116,27 @@ Singleton {
         print("Randomly selected wallpaper:", filePath);
         root.select(filePath, darkMode);
     }
+    // end if standard random from ...
+
+    // // non-recursive search on current folder
+    // function randomFromCurrentFolder(darkMode = Appearance.m3colors.darkmode) {
+    //     if (folderModel.count === 0) return;
+    //
+    //     let validImages = [];
+    //     for (let i = 0; i < folderModel.count; i++) {
+    //         if (!folderModel.get(i, "fileIsDir")) {
+    //             validImages.push(folderModel.get(i, "filePath"));
+    //         }
+    //     }
+    //
+    //     if (validImages.length > 0) {
+    //         const randomIndex = Math.floor(Math.random() * validImages.length);
+    //         const selectedFile = validImages[randomIndex];
+    //
+    //         print("[Wallpapers] Random selected:", selectedFile);
+    //         root.select(selectedFile, darkMode);
+    //     }
+    // } // end of non-recursive search on...
 
     Process {
         id: validateDirProc

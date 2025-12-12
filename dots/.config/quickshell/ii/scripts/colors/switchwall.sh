@@ -8,7 +8,18 @@ CONFIG_DIR="$XDG_CONFIG_HOME/quickshell/$QUICKSHELL_CONFIG_NAME"
 CACHE_DIR="$XDG_CACHE_HOME/quickshell"
 STATE_DIR="$XDG_STATE_HOME/quickshell"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SHELL_CONFIG_FILE="$XDG_CONFIG_HOME/illogical-impulse/config.json"
+# SHELL_CONFIG_FILE="$XDG_CONFIG_HOME/illogical-impulse/config.json"
+
+get_config_file() {
+    local current_mode=$(gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null | tr -d "'")
+    if [[ "$current_mode" == "prefer-dark" ]]; then
+        echo "$XDG_CONFIG_HOME/illogical-impulse/config.json"
+    else
+        echo "$XDG_CONFIG_HOME/illogical-impulse/config-light.json"
+    fi
+}
+SHELL_CONFIG_FILE="$(get_config_file)"
+
 MATUGEN_DIR="$XDG_CONFIG_HOME/matugen"
 terminalscheme="$SCRIPT_DIR/terminal/scheme-base.json"
 
@@ -57,6 +68,7 @@ post_process() {
 
     handle_kde_material_you_colors &
     "$SCRIPT_DIR/code/material-code-set-color.sh" &
+    "$SCRIPT_DIR/../hyprland/apply-hyprland-config.sh" &
 }
 
 check_and_prompt_upscale() {
@@ -319,13 +331,6 @@ main() {
     get_type_from_config() {
         jq -r '.appearance.palette.type' "$SHELL_CONFIG_FILE" 2>/dev/null || echo "auto"
     }
-    get_accent_color_from_config() {
-        jq -r '.appearance.palette.accentColor' "$SHELL_CONFIG_FILE" 2>/dev/null || echo ""
-    }
-    set_accent_color() {
-        local color="$1"
-        jq --arg color "$color" '.appearance.palette.accentColor = $color' "$SHELL_CONFIG_FILE" > "$SHELL_CONFIG_FILE.tmp" && mv "$SHELL_CONFIG_FILE.tmp" "$SHELL_CONFIG_FILE"
-    }
 
     detect_scheme_type_from_image() {
         local img="$1"
@@ -345,14 +350,12 @@ main() {
                 shift 2
                 ;;
             --color)
+                color_flag="1"
                 if [[ "$2" =~ ^#?[A-Fa-f0-9]{6}$ ]]; then
-                    set_accent_color "$2"
-                    shift 2
-                elif [[ "$2" == "clear" ]]; then
-                    set_accent_color ""
+                    color="$2"
                     shift 2
                 else
-                    set_accent_color $(hyprpicker --no-fancy)
+                    color=$(hyprpicker --no-fancy)
                     shift
                 fi
                 ;;
@@ -374,11 +377,10 @@ main() {
         esac
     done
 
-    # If accentColor is set in config, use it
-    config_color="$(get_accent_color_from_config)"
-    if [[ "$config_color" =~ ^#?[A-Fa-f0-9]{6}$ ]]; then
-        color_flag="1"
-        color="$config_color"
+    if [[ "$mode_flag" == "dark" ]]; then
+        SHELL_CONFIG_FILE="$XDG_CONFIG_HOME/illogical-impulse/config.json"
+    elif [[ "$mode_flag" == "light" ]]; then
+        SHELL_CONFIG_FILE="$XDG_CONFIG_HOME/illogical-impulse/config-light.json"
     fi
 
     # If type_flag is not set, get it from config

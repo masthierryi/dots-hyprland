@@ -81,43 +81,43 @@ ContentPage {
                         maskSource: Rectangle {
                             width: 360
                             height: 200
-                            radius: Appearance.rounding.normal
+                            radius: Appearance.rounding.small
                         }
                     }
                 }
             }
 
             ColumnLayout {
-                RippleButtonWithIcon {
-                    enabled: !randomWallProc.running
-                    visible: Config.options.policies.weeb === 1
-                    Layout.fillWidth: true
-                    buttonRadius: Appearance.rounding.small
-                    materialIcon: "ifl"
-                    mainText: randomWallProc.running ? Translation.tr("Be patient...") : Translation.tr("Random: Konachan")
-                    onClicked: {
-                        randomWallProc.scriptPath = `${Directories.scriptPath}/colors/random/random_konachan_wall.sh`;
-                        randomWallProc.running = true;
-                    }
-                    StyledToolTip {
-                        text: Translation.tr("Random SFW Anime wallpaper from Konachan\nImage is saved to ~/Pictures/Wallpapers")
-                    }
-                }
-                RippleButtonWithIcon {
-                    enabled: !randomWallProc.running
-                    visible: Config.options.policies.weeb === 1
-                    Layout.fillWidth: true
-                    buttonRadius: Appearance.rounding.small
-                    materialIcon: "ifl"
-                    mainText: randomWallProc.running ? Translation.tr("Be patient...") : Translation.tr("Random: osu! seasonal")
-                    onClicked: {
-                        randomWallProc.scriptPath = `${Directories.scriptPath}/colors/random/random_osu_wall.sh`;
-                        randomWallProc.running = true;
-                    }
-                    StyledToolTip {
-                        text: Translation.tr("Random osu! seasonal background\nImage is saved to ~/Pictures/Wallpapers")
-                    }
-                }
+                // RippleButtonWithIcon {
+                //     enabled: !randomWallProc.running
+                //     visible: Config.options.policies.weeb === 0
+                //     Layout.fillWidth: true
+                //     buttonRadius: Appearance.rounding.small
+                //     materialIcon: "ifl"
+                //     mainText: randomWallProc.running ? Translation.tr("Be patient...") : Translation.tr("Random: Konachan")
+                //     onClicked: {
+                //         randomWallProc.scriptPath = `${Directories.scriptPath}/colors/random/random_konachan_wall.sh`;
+                //         randomWallProc.running = true;
+                //     }
+                //     StyledToolTip {
+                //         text: Translation.tr("Random SFW Anime wallpaper from Konachan\nImage is saved to ~/Pictures/Wallpapers")
+                //     }
+                // }
+                // RippleButtonWithIcon {
+                //     enabled: !randomWallProc.running
+                //     visible: Config.options.policies.weeb === 0
+                //     Layout.fillWidth: true
+                //     buttonRadius: Appearance.rounding.small
+                //     materialIcon: "ifl"
+                //     mainText: randomWallProc.running ? Translation.tr("Be patient...") : Translation.tr("Random: osu! seasonal")
+                //     onClicked: {
+                //         randomWallProc.scriptPath = `${Directories.scriptPath}/colors/random/random_osu_wall.sh`;
+                //         randomWallProc.running = true;
+                //     }
+                //     StyledToolTip {
+                //         text: Translation.tr("Random osu! seasonal background\nImage is saved to ~/Pictures/Wallpapers")
+                //     }
+                // }
                 RippleButtonWithIcon {
                     Layout.fillWidth: true
                     materialIcon: "wallpaper"
@@ -129,7 +129,7 @@ ContentPage {
                     }
                     mainContentComponent: Component {
                         RowLayout {
-                            spacing: 10
+                            spacing: 30
                             StyledText {
                                 font.pixelSize: Appearance.font.pixelSize.small
                                 text: Translation.tr("Choose file")
@@ -141,7 +141,7 @@ ContentPage {
                                     key: "Ctrl"
                                 }
                                 KeyboardKey {
-                                    key: "󰖳"
+                                    key: "󰣇"
                                 }
                                 StyledText {
                                     Layout.alignment: Qt.AlignVCenter
@@ -216,6 +216,37 @@ ContentPage {
                     "displayName": Translation.tr("Tonal Spot")
                 }
             ]
+        }
+
+        ConfigRow{
+            Layout.fillWidth: true
+            ConfigSwitch {
+                buttonIcon: "shuffle"
+                text: Translation.tr("Wallpaper slideshow")
+                checked: Config.options.background.enableSlide
+                onCheckedChanged: {
+                    Config.options.background.enableSlide = checked;
+                    console.log("[Wallpaper] slideshow " + (checked ? "enabled" : "disabled"));
+                    if (checked && typeof rotationTimer !== "undefined") rotationTimer.restart();
+                    if (!checked && typeof rotationTimer !== "undefined") rotationTimer.stop();
+                }
+                StyledToolTip {
+                    text: "Note that the wallpapers are chosen from your defined wallpaper folder, and not from web"
+                }
+            }
+            ConfigSpinBox {
+                icon: "timer"
+                text: Translation.tr("Wallpaper change timer")
+                value: Config.options.background.slideInterval
+                from: 1
+                to: 60
+                stepSize: 1
+                onValueChanged: {
+                    Config.options.background.slideInterval = value;
+                    console.log("[Wallpaper] slideInterval set to", value, "minutes");
+                    if (typeof rotationTimer !== "undefined" && rotationTimer.running) rotationTimer.restart();
+                }
+            }
         }
 
         ConfigSwitch {
