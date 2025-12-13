@@ -1,0 +1,223 @@
+# \ -> *
+# [ -> ]
+# ] -> \
+# { -> }
+# } -> |
+
+matches:
+  # Exemplos e utilidades
+  - trigger: "espanso]]"
+    force_mode: keys
+    replace: "Hi there!"
+
+  # Data (MM/DD/YYYY)
+  - trigger: "date]]"
+    force_mode: keys
+    replace: "{{mydate}}"
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "%m/%d/%Y"
+
+  # Shell command
+  - trigger: "shell]]"
+    force_mode: keys
+    replace: "{{output}}"
+    vars:
+      - name: output
+        type: shell
+        params:
+          cmd: "echo 'Hello from your shell'"
+
+  # =========================
+  # LATEX SNIPPETS (COM ROTAÇÃO E 4 ESPAÇOS)
+  # =========================
+
+  - trigger: "item]]"
+    force_mode: keys
+    replace: |
+      *begin}itemize|
+          *item ...
+          *item ...
+      *end}itemize|
+
+  - trigger: "code]]"
+    force_mode: keys
+    replace: |
+      *lstinputlisting]language = \}{file|
+
+  - trigger: "verb]]"
+    force_mode: keys
+    replace: |
+      *begin}Verbatim|]fontsize=*tiny\
+          ...
+      *end}Verbatim|
+
+  - trigger: "img]]"
+    force_mode: keys
+    replace: |
+      *begin}figure|]H\
+          *centering
+          *includegraphics]scale= ... \}{file.extension|
+          *caption} ... |
+          *label} ... |
+      *end}figure|
+
+  - trigger: "2img]]"
+    force_mode: keys
+    replace: |
+      *begin}figure|]H\ % two images aside
+          *centering*noindent
+          *subcaptionbox}*label} ... ||}*includegraphics]scale= ... \}{... ||
+          *subcaptionbox}*label} ... ||}*includegraphics]scale= ... \}{... ||
+          *caption}Two animals|*label} ... |
+          *label} ... |
+      *end}figure|
+
+  - trigger: "mpimg]]"
+    force_mode: keys
+    replace: |
+      *begin}figure|]H\ % minipage
+          *begin}minipage|]b\{0.49*textwidth|
+              *centering
+              *includegraphics]width= ... \}{... |
+          *end}minipage|
+          *hfill
+          *begin}minipage|]b\{0.49*textwidth|
+              *centering
+              *includegraphics]width= ... \}{... |
+          *end}minipage|
+          *caption}*textbf} ... ||
+          *label} ... |
+      *end}figure|
+
+  - trigger: "table]]"
+    force_mode: keys
+    replace: |
+      *begin}table|]H\
+          *centering
+          *caption} ... |*vspace}1pt|
+          *begin}tabular|}ccc|
+              *hline
+              ... & ... & ... **
+              ... & ... & ...
+          *end}tabular|
+          ** *normalfont *autores} ... |
+          *label}|
+      *end}table|
+
+  - trigger: "minip]]"
+    force_mode: keys
+    replace: |
+      *begin}minipage|]b\{0.49|
+          ...
+      *end}minipage|
+      *hfill
+      *begin}minipage|]b\{0.49|
+          ...
+      *end}minipage|
+
+  - trigger: "eq]]"
+    force_mode: keys
+    replace: |
+      *begin}equation|
+          ...
+          *label}|
+      *end}equation|
+
+  - trigger: "align]]"
+    force_mode: keys
+    replace: |
+      *begin}align|
+          ... & ... *nonumber **
+          ... & ... ** % this equation has number
+          ... & ... *nonumber
+          *label}|
+      *end}align|
+
+  - trigger: "book]]"
+    force_mode: keys
+    replace: |
+      @book}author_code,
+          title=}-...|,
+          author=}-... |,
+          publisher=}-... |,
+          year=}-... |,
+          address=}-... |,
+          subtitle=}... |,
+          edition=}... |,
+          pages=}...|,
+          number=}... |,
+          series=}... |,
+          isbn=}... |,
+          volume=}... |,
+          org-short=}... |,
+          url=}... |,
+          urlaccessdate=}... |,
+          note=}... |
+      |
+
+  - trigger: "article]]"
+    force_mode: keys
+    replace: |
+      @article}author_code,
+          title=}-... |,
+          author=}-... |,
+          journal=}-... |,
+          year=}-... |,
+          volume=}-... |,
+          number=}-... |,
+          pages=}-... |,
+          month=}... |,
+          part=}... |,
+          section=}... |,
+          url=}... |,
+          urlaccessdate=}... |,
+          note=}... |
+      |
+
+  - trigger: "proceeding]]"
+    force_mode: keys
+    replace: |
+      @inproceedings}author_code,
+          title=}-... |,
+          author=}-... |,
+          organization=}-... |,
+          conference-number=}-... |,
+          year=}-... |,
+          address=}-... |,
+          publisher=}... |,
+          booktitle=}... |,
+          pages=}... |,
+          month=}... |,
+          conference-location=}... |,
+          conference-year=}... |,
+          url=}... |,
+          urlaccessdate=}... |,
+          note=}... |
+      |
+
+
+  - trigger: "col]]"
+    force_mode: keys
+    replace: |
+      *begin}columns|]T\
+          *begin}column|}0.5*textwidth|
+              ...
+          *end}column|
+          *begin}column|}0.5*textwidth|
+              ...
+          *end}column|
+      *end}columns|
+
+# template
+  # - trigger: "num]]"
+  #   force_mode: keys
+  #   replace: "efswefef"
+
+# \ -> *
+# [ -> ]
+# ] -> \
+# { -> }
+# } -> |
